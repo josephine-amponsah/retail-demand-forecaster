@@ -1,4 +1,4 @@
-import dash 
+import dash
 from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
@@ -24,7 +24,6 @@ app.layout = html.Div([
                             dbc.Row(
                                 [dbc.NavLink(page["name"], href=page['path'], className="nav-subtext")],)
                             for page in dash.page_registry.values()
-                            if page["path"].startswith("/dashboard")
                         ]
                     ),
                 ], className='nav-card '), style={"height": "100%"},

@@ -1,0 +1,110 @@
+.nav-card {
+    font-size: 14px;
+    font-weight: bold;
+    height: 100vh;
+    text-align: left;
+    padding-top: 20px;
+    padding-left: 15px;
+    margin-top: 0px;
+    color: #e6e8eb;
+    background-color: #071839;
+}
+
+.nav-card .nav-subtext {
+    font-size: 10px;
+    text-align: left;
+    align-content: left;
+}
+
+.nav-col {
+    height: 100vh;
+}
+
+.nav-col nav-text {
+    color: #e6e8eb;
+}
+
+.user-bar {
+    font-size: 10px;
+
+}
+
+.dashboard {
+    padding: 10px;
+    font-size: 12px;
+}
+
+.dashboard .deep {
+    font-weight: bold;
+}
+
+.icon-bar {
+    /* border: 1px solid red; */
+    font-size: 18px;
+    text-align: right;
+    /* width: 50px; */
+
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.filter-bar {
+    /* text-align: right; */
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid red;
+}
+
+.filter-bar .download-button {
+    background-color: #113c8e;
+    border-radius: 5px;
+    font-size: 10px;
+    /* align-content: right; */
+    /* align-self: right; */
+    display: flex;
+    justify-content: end;
+}
+
+.dashboard-date-filter {
+    font-size: 10px;
+    /* height: 100%; */
+    border-radius: 5px;
+
+    /* background-color: #cdd1d7; */
+}
+
+#dash-date-filter {
+    font-size: 10px;
+}
+
+.summary-section {
+    background-color: #fafbfd;
+    /* width: 8; */
+    margin-left: 80px;
+    margin-right: 80px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 5px;
+
+}
+
+.summary-cards {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.summary-cards .value {
+    font-weight: bold;
+    font-size: 20px;
+    color: #071839;
+}
+
+.graph-section {
+    background-color: #fafbfd;
+    /* width: 8; */
+    margin-left: 80px;
+    margin-right: 80px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 5px;
+}

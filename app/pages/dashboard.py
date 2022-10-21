@@ -5,7 +5,7 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 
 # app = Dash(__name__)
-dash.register_page(__name__, path="/dashboard/sales-stats")
+dash.register_page(__name__)
 #app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 
 revSummary = ['Revenue', 'Transactions', 'Avg. Purchase',  'Profit']
