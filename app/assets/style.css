@@ -11,7 +11,7 @@
 }
 
 .nav-card .nav-subtext {
-    font-size: 10px;
+    font-size: 12px;
     text-align: left;
     align-content: left;
 }
@@ -107,4 +107,12 @@
     justify-content: center;
     padding: 20px;
     border-radius: 5px;
+}
+.graph-style{
+    width: 20px;
+
+}
+
+.side-card{
+    height: 100%;
 }

@@ -18,7 +18,6 @@ app.layout = html.Div([
                 html.Div([
                     dbc.Nav("LOGO"),
                     html.Br(),
-                    html.Div('Dashboard'),
                     html.Div(
                         [
                             dbc.Row(
@@ -33,7 +32,6 @@ app.layout = html.Div([
             ])
 ]
 )
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)

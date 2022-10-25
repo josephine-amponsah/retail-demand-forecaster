@@ -5,10 +5,10 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 
 # app = Dash(__name__)
-dash.register_page(__name__)
+dash.register_page(__name__, path = "/")
 #app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 
-revSummary = ['Revenue', 'Transactions', 'Avg. Purchase',  'Profit']
+revSummary = ['Products Sold', 'Revenue', 'Avg. Purchase',  'Freight Revenue']
 
 layout = html.Div([
     dbc.Row([
@@ -36,17 +36,29 @@ layout = html.Div([
         dbc.Row([
             dbc.Col([
                 dbc.Row([
-                    dcc.Graph(id="bar-trans-count")
-                ]),
-                dbc.Row([
-                    dcc.Graph(id="bar-sales-rev")
-                ])
+                dbc.Col([dcc.Graph(id="bar-trans-count")],
+                        width= 6)
+                ,
+                dbc.Col([dcc.Graph(id="bar-trans-rev")], 
+                        width= 6)
+                ],),
+            ], width= 9),
+            dbc.Col([
+                dbc.Container([dbc.Card(children=[html.Div("Charts")], className = "side-card")], className = "side-card")
+            ], width= 3)
+        ], justify = "between"),
+        dbc.Row([
+            dbc.Col([
+                dcc.Graph(id="bar-trans-count")
+                ,
+                dcc.Graph(id="bar-sales-rev")
             ], width=9),
             dbc.Col([
                 dbc.Card(children=[html.Div("Charts")])
             ], width=3)
-        ], style={"height": "100vh"})
+        ]),
     ], className="dashboard")
 
 
 ])
+
