@@ -7,6 +7,8 @@ from dash.dependencies import Input, Output
 
 
 # from app.pages import sales
+sales = pd.read_csv("../data/sales.csv")
+returns = pd.read_csv("../data/returns.csv")
 
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
                 dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])

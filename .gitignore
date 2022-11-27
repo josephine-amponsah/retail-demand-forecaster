@@ -3,3 +3,4 @@ env/
 app/pages/__pycache__/
 notebooks/test_model.ipynb
 bin/
+app/pages/pricing.py
