@@ -1,5 +1,5 @@
 import dash
-from dash import Dash, html, dcc, Input, Output, callback
+from dash import Dash, html, dcc, Input, Output, callback, State
 import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
@@ -18,26 +18,25 @@ revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best P
 
 layout = html.Div([
     dbc.Row([
+        dbc.Row(style={'height': '10px'}),
         dbc.Row([
+            
             dbc.Col([
                   html.Div([
                       html.I(className="bi bi-search"),
                       html.I(className="bi bi-bell-fill"),
                       html.I(className="bi bi-person-circle"),
                   ], className='icon-bar'),
-                  ],  width=3)
-        ], justify="end"),
-        html.Br(),
-        dbc.Row(style={'height': '20px'}),
-        dbc.Row([
+                  ],  width=3),
+        
             dbc.Col([
                   dcc.Dropdown(
                       options = year_filter,
-                      value = year_filter[-1],
+                      value = year_filter[-2],
                       id = "date-year-filter"
                   ),
                   ],  width=3)
-        ], justify="end"),
+        ], justify="between"),
         html.Br(),
         dbc.Row(style={'height': '20px'}),
         dbc.Row([
@@ -93,7 +92,7 @@ layout = html.Div([
             dbc.Col([
                   dcc.Dropdown(
                       options = year_filter,
-                      value = year_filter[-1],
+                      value = year_filter[-2],
                       id = "date-time-filter"
                   ),
                   ],  width=3),
@@ -114,7 +113,16 @@ layout = html.Div([
                 ],),
             ], width= 9),
             dbc.Col([
-                dbc.Container([dbc.Card(children=[html.Div("Charts")], className = "side-card")], className = "side-card")
+                dbc.Container([
+                    dbc.Card(children=[
+                        html.H3("Highlights", className = "highlight-title"),
+                        html.Div("Returned Product"),
+                        html.Div("Highest Purchased"),
+                        html.Div("Lowest Net Demands")
+                        
+                        
+                        ], className = "side-card")
+                    ], className = "side-card")
             ], width= 3)
         ], justify = "between"),
         # dbc.Row([
@@ -159,10 +167,36 @@ def date_summary(year):
     return [total_sales], [total_returns], [best_warehouse], [best_category]
 
 @callback(
-    [Output("sales-over-time", "value")],
+    [Output("sales-over-time", "figure")],
     Input("date-time-filter", "value"),
     Input("category-filter", "value"),
 )
 
 def salesTrend(date, category):
-    return 
+    masks = (sales.year == date) & (sales.Product_Category == category)
+    filtered_data = sales.loc[masks, :]
+    filtered_data = filtered_data.fillna(0)
+    
+    fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
+    sales_trend_figure = {
+        "data": [
+            {
+                "x": fig_data["month_year"],
+                "y": fig_data["Order_Demand"],
+                "type": "lines",
+                "hovertemplate": "%{y:.2f}<extra></extra>",
+            },
+        ],
+        "layout": {
+            "title": {
+                "text": "Demand Trend",
+                "x": 0.05,
+                "xanchor": "left",
+            },
+            #"xaxis": {"fixedrange": True},
+            # "yaxis": {"fixedrange": True},
+            "colorway": ["#17B897"],
+        },
+    }
+    
+    return [sales_trend_figure]
