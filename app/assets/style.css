@@ -117,10 +117,26 @@
 .side-card{
     height: 100%;
     text-align: center;
-    
+    padding: 10px;
 }
-.side-card highlight-title{
+.side-card .highlight-title{
     text-align: center;
-    font-size: 20px;
     font-weight: bold;
+    font-size: 20px;
+    color: #071839;
+}
+
+.side-card .sub-title{
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: #071839;
+}
+
+.side-card .side-card-row{
+    padding: 10px;
+}
+
+.side-card .side-card-row .sub-title-main{
+    font-size: 20px;
 }

@@ -115,10 +115,29 @@ layout = html.Div([
             dbc.Col([
                 dbc.Container([
                     dbc.Card(children=[
-                        html.H3("Highlights", className = "highlight-title"),
-                        html.Div("Returned Product"),
-                        html.Div("Highest Purchased"),
-                        html.Div("Lowest Net Demands")
+                        dbc.Row([
+                            html.Div("Highlights", className = "highlight-title"),
+                        ]),
+                        html.Br(),
+                        dbc.Row([
+                            html.Div("Most Returned Product", className = "sub-title"),
+                            html.Div([], id = "main-returned", className = "sub-title-main"),
+                            html.Div([], id = "details-returned")
+                        ], className = "side-card-row"),
+                        html.Br(),
+                        dbc.Row([
+                            html.Div("Highest Purchased", className = "sub-title"),
+                            html.Div([], id = "main-purchased", className = "sub-title-main"),
+                            html.Div([], id = "details-purchased")
+                        ], className = "side-card-row"),
+                        html.Br(),
+                        dbc.Row([
+                            html.Div("Lowest Demanded Product", className = "sub-title"),
+                            html.Div([], id = "main-lowest", className = "sub-title-main"),
+                            html.Div([], id = "details-lowest")
+                            
+                        ] , className = "side-card-row")
+                        
                         
                         
                         ], className = "side-card")
@@ -198,5 +217,36 @@ def salesTrend(date, category):
             "colorway": ["#17B897"],
         },
     }
-    
     return [sales_trend_figure]
+
+@callback(
+    [Output("main-returned", "children"), Output("main-purchased", "children"), Output("main-lowest", "children"), 
+     Output("details-returned", "children"), Output("details-purchased", "children"), Output("details-lowest", "children")],
+    Input("date-year-filter", "value")
+)
+
+def highlights(year):
+    mask1 = sales.year == year
+    mask2 = returns.year == year
+    filtered_sales = sales.loc[mask1,:]
+    filtered_returns = returns.loc[mask2,:]
+    
+    # most returned product
+    most_returned = filtered_returns.groupby("Product_Code")["Order_Demand"].sum().to_frame()
+    returned = most_returned.idxmax(axis = 0)[0]
+    details_most_returned =format(most_returned["Order_Demand"].max(), ",")
+    
+    # most purchased products
+    
+    most_purchased = filtered_sales.groupby("Product_Code")["Order_Demand"].sum().to_frame()
+    purchased = most_purchased.idxmax(axis = 0)[0]
+    details_most_purchased = format(most_purchased["Order_Demand"].max(), ",")
+    
+    
+    # lowest performing products
+    lowest_performing = filtered_sales.groupby("Product_Code")["Order_Demand"].sum().to_frame()
+    performing = lowest_performing.idxmin(axis = 0)[0]
+    details_lowest_performing = format(lowest_performing["Order_Demand"].min(), ",")
+    
+    
+    return [returned], [purchased], [performing], [details_most_returned], [details_most_purchased], [details_lowest_performing]
