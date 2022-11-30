@@ -16,12 +16,12 @@
 #   memory_gb: 4
 
 runtime: custom
-# env: flex
+
 entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
   python_version: 3
-
+# env: flex
 beta_settings:
     # If using Cloud SQL, uncomment and set this value to the Cloud SQL
     # connection name, e.g.
