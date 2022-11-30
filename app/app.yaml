@@ -15,7 +15,9 @@
 # resources:
 #   memory_gb: 4
 
-runtime: custom
+runtime: python
+
+env: gunicorn
 
 entrypoint: gunicorn -b :$PORT main:app
 
