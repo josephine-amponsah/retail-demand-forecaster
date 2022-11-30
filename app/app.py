@@ -4,7 +4,7 @@ import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-
+import os
 
 # from app.pages import sales
 sales = pd.read_csv("../data/sales.csv")
@@ -36,4 +36,6 @@ app.layout = html.Div([
 )
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', debug=True, port=8080)
+    server_port = os.environ.get('PORT', '8080')
+    app.run(debug=False, port=server_port, host='0.0.0.0')
+
