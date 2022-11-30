@@ -15,7 +15,7 @@
 # resources:
 #   memory_gb: 4
 
-runtime: python
+runtime: python39
 
 env: standard
 
