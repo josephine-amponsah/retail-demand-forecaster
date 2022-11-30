@@ -1,4 +1,4 @@
-runtime: python39 # or another supported version
+runtime: python38 # or another supported version
 
 instance_class: F2
 
