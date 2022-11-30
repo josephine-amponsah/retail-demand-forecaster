@@ -17,7 +17,7 @@
 
 runtime: python
 
-env: gunicorn
+env: standard
 
 entrypoint: gunicorn -b :$PORT main:app
 
