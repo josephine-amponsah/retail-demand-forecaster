@@ -16,7 +16,7 @@
 #   memory_gb: 4
 
 runtime: custom
-env: flex
+# env: flex
 entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
