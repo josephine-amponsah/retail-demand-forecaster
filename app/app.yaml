@@ -1,5 +1,7 @@
 runtime: python38 # or another supported version
 
+entrypoint: waitress-serve --listen=*:8080 serve:app
+
 instance_class: F2
 
 env_variables:
