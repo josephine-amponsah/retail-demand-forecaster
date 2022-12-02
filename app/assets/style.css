@@ -140,3 +140,8 @@
 .side-card .side-card-row .sub-title-main{
     font-size: 20px;
 }
+
+.graph-style{
+    height: 80vh;
+    width: 100%;
+}
