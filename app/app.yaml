@@ -2,7 +2,7 @@ runtime: python39
 
 # instance: F2
 
-entrypoint: waitress -b :8080 main:app
+entrypoint: waitress-serve --host 127.0.0.1 hello:app
 
 env: standard
 
