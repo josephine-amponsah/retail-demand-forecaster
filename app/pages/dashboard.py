@@ -18,7 +18,17 @@ revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best P
 
 layout = html.Div([
     dbc.Row([
-        dbc.Row(style={'height': '10px'}),
+        dbc.Col([
+            dbc.Card([
+                dbc.Row([
+                    html.Div(["Year"]),
+                    dcc.Input()
+                    ]),
+                dbc.Row([])
+            ], className = "filter-card")
+            ], width= 2),
+        dbc.Col([
+            dbc.Row(style={'height': '10px'}),
         dbc.Row([
             
             dbc.Col([
@@ -144,16 +154,9 @@ layout = html.Div([
                     ], className = "side-card")
             ], width= 3)
         ], justify = "between"),
-        # dbc.Row([
-        #     dbc.Col([
-        #         dcc.Graph(id="bar-trans-count")
-        #         ,
-        #         dcc.Graph(id="bar-sales-rev")
-        #     ], width=9),
-        #     dbc.Col([
-        #         dbc.Card(children=[html.Div("Charts")])
-        #     ], width=3)
-        # ]),
+        
+            ]),
+        
     ], className="dashboard")
 
 

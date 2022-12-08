@@ -1,19 +1,39 @@
+@font-face {
+    font-family: Ubuntu-Regular;
+    src: url(Ubuntu-Regular.ttf);
+}
+@font-face {
+    font-family: Ubuntu-Light;
+    src: url(Ubuntu-Light.ttf);
+}
+
+
+.application{
+    background-color: #F8FAFB;
+}
 .nav-card {
-    font-size: 14px;
+    /* font-size: 14px; */
     font-weight: bold;
-    height: 100vh;
+    font-family: Ubuntu-Regular;
+    height: 50px;
     text-align: left;
-    padding-top: 20px;
-    padding-left: 15px;
-    margin-top: 0px;
-    color: #e6e8eb;
-    background-color: #071839;
+    padding-top: 5px;
+    padding-left: 50px; 
+    /* margin-top: 0px; */
+    /* color: #e6e8eb; */
+    background-color:  #F8FAFB; 
+}
+.nav-card .logo{
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .nav-card .nav-subtext {
-    font-size: 12px;
+    font-size: 15px;
     text-align: left;
     align-content: left;
+    color: black;
+    font-family: Ubuntu-Light;
 }
 
 .nav-col {
@@ -30,6 +50,7 @@
 }
 
 .dashboard {
+    font-family: Ubuntu-Regular;
     padding: 10px;
     font-size: 12px;
     background-color: #F8FAFB;
@@ -49,11 +70,13 @@
     justify-content: space-evenly;
 }
 
-.filter-bar {
+.filter-card {
     /* text-align: right; */
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    border: 1px solid red;
+    border: 1px solid red; */
+    border-radius: 10px;
+    color: #602BF8;
 }
 
 .filter-bar .download-button {
