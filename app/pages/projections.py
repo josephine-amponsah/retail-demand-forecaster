@@ -15,25 +15,37 @@ revSummary = ['Revenue', 'Transactions', 'Avg. Purchase',  'Profit']
 
 layout = html.Div([
     dbc.Row([
-        html.Br(),
-        dbc.Row(style={'height': '20px'}),
-        html.Br(),
-        dbc.Row([
-            dbc.Col([dcc.DatePickerRange()], width = 3),
-            dbc.Col([dcc.Dropdown()], width = 3),
-            dbc.Col([dbc.Button()], width = 3),
-            dbc.Col([dbc.Button("Download")], width = 3),
-        ]),
-        html.Br(),
-        dbc.Row(style={'height': '20px'}),
-        html.Br(),
-        dbc.Row([
-            dbc.Col([
+        dbc.Col([
+            dbc.Card([
                 dbc.Row([
-                    dcc.Graph(id="bar-trans-count", className = "graph-style")
-                ]),
-            ], width=6),
-            dbc.Col([
+                    html.Div(["Year"]),
+                    dcc.Dropdown(
+                    #   options = year_filter,
+                    #   value = year_filter[-2],
+                    #   id = "date-year-filter"
+                  ),
+                    # dcc.Input()
+                    
+                    ]),
+                dbc.Row([])
+            ], className = "filter-card")
+            ], width = 2),
+        dbc.Col([
+            html.Br(),
+            dbc.Row([
+                dbc.Card([
+                    dcc.Graph(id="bar-trans-count", className = "graph-style"),
+                ], className = "graph-card")
+        ],),
+            html.Br(),
+            dbc.Row([
+                dbc.Card([
+                    dcc.Graph(id="bar-trans-count", className = "graph-style"),
+                ], className = "graph-card")
+        ],)
+    
+            ], width = 5),
+        dbc.Col([
                 dash_table.DataTable(
                 id='table-container',
                 data=[],
@@ -42,9 +54,8 @@ layout = html.Div([
                 style_cell={'textAlign':'center'},
                 row_deletable=True,
                 editable=True)
-            ], width= 6)
-        ], style={"height": "100vh"})
-    ], className="dashboard")
+            ], width= 5)
+        ], className="dashboard")
 
 
 ])

@@ -18,22 +18,20 @@ server = app.server
 
 app.layout = html.Div([
     dbc.Row([
-            dbc.Col(
-                html.Div([
-                    dbc.Nav("LOGO"),
-                    html.Br(),
-                    html.Div(
-                        [
-                            dbc.Row(
-                                [dbc.NavLink(page["name"], href=page['path'], className="nav-subtext")],)
+            dbc.Row([
+                dbc.Col("MARQET", width = 4, className = "logo"),
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(
+                                [dbc.NavLink(page["name"], href=page['path'], style={"color":"black"})],)
                             for page in dash.page_registry.values()
-                        ]
-                    ),
-                ], className='nav-card '), style={"height": "100%"},
-                width=2
-            ),
-            dbc.Col(dash.page_container)
-            ])
+                    ], className = "nav-subtext", align = 'center', justify = 'end')
+                        
+            ], width = 3),
+            ], justify= 'between',
+            className = "nav-card"),
+            dbc.Row([dash.page_container])
+            ], className = "application")
 ]
 )
 
