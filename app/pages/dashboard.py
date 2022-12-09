@@ -19,63 +19,54 @@ revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best P
 layout = html.Div([
     dbc.Row([
         dbc.Col([
-            dbc.Card([
+                dbc.Card([
                 dbc.Row([
                     html.Div(["Year"]),
-                    dcc.Input()
-                    ]),
-                dbc.Row([])
-            ], className = "filter-card")
-            ], width= 2),
-        dbc.Col([
-            dbc.Row(style={'height': '10px'}),
-        dbc.Row([
-            
-            dbc.Col([
-                  html.Div([
-                      html.I(className="bi bi-search"),
-                      html.I(className="bi bi-bell-fill"),
-                      html.I(className="bi bi-person-circle"),
-                  ], className='icon-bar'),
-                  ],  width=3),
-        
-            dbc.Col([
-                  dcc.Dropdown(
+                    dcc.Dropdown(
                       options = year_filter,
                       value = year_filter[-2],
                       id = "date-year-filter"
                   ),
-                  ],  width=3)
-        ], justify="between"),
+                    # dcc.Input()
+                    
+                    ]),
+                dbc.Row([])
+            ], className = "filter-card")
+            
+            
+            ], width= 2),
+        dbc.Col([
+            
         html.Br(),
-        dbc.Row(style={'height': '20px'}),
         dbc.Row([
+            dbc.Col([
+                dbc.Row([
                 dbc.Col([
                     dbc.Card(
                 children=[
-                    html.Div("Products Sold"), 
+                    html.Div("Total Demand"), 
                     html.Div( [],
                         id = "sales",className='value',),
-                    html.Div("description")
-                    ], className='summary-cards',)
+                    html.Div("Products")
+                    ], className='summary-cards',outline= True, color = "light")
                     ], width=3)
                 ,
                 dbc.Col([
                     dbc.Card(
                 children=[
-                    html.Div("Returns"), 
+                    html.Div("Total Returns"), 
                     html.Div([], className='value', id ="returns"),
-                    html.Div("description")
-                    ], className='summary-cards',)
+                    html.Div("Products")
+                    ], className='summary-cards',outline= True, color = "light")
                     ], width = 3)
                 ,
                 dbc.Col([
                     dbc.Card(
                 children=[
-                    html.Div("Best Performing Warehouse"), 
+                    html.Div("Net Demand"), 
                     html.Div([], className='value', id = "warehouse"),
-                    html.Div("description")
-                    ], className='summary-cards',),
+                    html.Div("Products")
+                    ], className='summary-cards',outline= True, color = "light"),
                     ], width = 3)
                 ,
                 dbc.Col([
@@ -83,8 +74,8 @@ layout = html.Div([
                 children=[
                     html.Div("Highest Grossing Category"), 
                     html.Div([], className='value', id = "category"),
-                    html.Div("description")
-                    ], className='summary-cards',),
+                    html.Div("Category")
+                    ], className='summary-cards',outline= True, color = "light"),
                 ]
                     , width = 3)
                 
@@ -92,39 +83,37 @@ layout = html.Div([
         
             
         ]),
-        html.Br(),
-        dbc.Row(style={'height': '20px'}),
-        html.Br(),
-        dbc.Row(style={'height': '20px'}),
-        dbc.Row([
-            dbc.Col([
+                html.Br(),
                 dbc.Row([
-            dbc.Col([
-                  dcc.Dropdown(
-                      options = year_filter,
-                      value = year_filter[-2],
-                      id = "date-time-filter"
-                  ),
-                  ],  width=3),
-            dbc.Col([
-                  dcc.Dropdown(
-                      options = category_filter,
-                      value = category_filter[-1],
-                      id = "category-filter"
-                  ),
-                  ],  width=3)
+            # dbc.Col([
+            #       dcc.Dropdown(
+            #           options = year_filter,
+            #           value = year_filter[-2],
+            #           id = "date-time-filter"
+            #       ),
+            #       ],  width=3),
+            # dbc.Col([
+            #       dcc.Dropdown(
+            #           options = category_filter,
+            #           value = category_filter[-1],
+            #           id = "category-filter"
+            #       ),
+            #       ],  width=3)
         ], justify="end"),
                 dbc.Row([
-                dbc.Col([dcc.Graph(id="sales-over-time")],)
-                        # width= 6)
-                ,
-                # dbc.Col([dcc.Graph(id="bar-trans-rev")], 
-                #         width= 6)
+                    dbc.Card([
+                        dcc.Graph(id="sales-over-time", className = "graph-bar-one")
+                    ], className = "graph-card",outline= True, color = "light"),
                 ],),
+                html.Br(),
+                dbc.Row([
+                    dbc.Card([
+                        dcc.Graph(id="sales-over-time", className = "graph-bar-one")
+                    ], className = "graph-card",outline= True, color = "light")
+                ])
             ], width= 9),
             dbc.Col([
-                dbc.Container([
-                    dbc.Card(children=[
+                dbc.Card(children=[
                         dbc.Row([
                             html.Div("Highlights", className = "highlight-title"),
                         ]),
@@ -150,8 +139,8 @@ layout = html.Div([
                         
                         
                         
-                        ], className = "side-card")
-                    ], className = "side-card")
+                        ], className = "side-card",outline= True, color = "light")
+                    
             ], width= 3)
         ], justify = "between"),
         

@@ -9,7 +9,7 @@
 
 
 .application{
-    background-color: #F8FAFB;
+    background-color: #ffff;
 }
 .nav-card {
     /* font-size: 14px; */
@@ -21,7 +21,7 @@
     padding-left: 50px; 
     /* margin-top: 0px; */
     /* color: #e6e8eb; */
-    background-color:  #F8FAFB; 
+    background-color:  #ffff; 
 }
 .nav-card .logo{
     font-size: 25px;
@@ -51,9 +51,9 @@
 
 .dashboard {
     font-family: Ubuntu-Regular;
-    padding: 10px;
+    padding-right: 10px;
     font-size: 12px;
-    background-color: #F8FAFB;
+    background-color: #ffff;
 }
 
 .dashboard .deep {
@@ -75,8 +75,20 @@
     /* display: flex;
     justify-content: space-between;
     border: 1px solid red; */
-    border-radius: 10px;
-    color: #602BF8;
+    border-radius: 0px 50px 50px 0px;
+    background-color: #602BF8;
+    height: 350px;
+    padding: 20px;
+    /* margin-left: 5px; */
+    margin-top: 15px;
+    margin-bottom: 50px;
+    margin-right: 20px;
+    width: 135px;
+    color: #ffff;
+    font-family: Ubuntu-Light;
+    font-size: 15px;
+    font-weight: bold;
+
 }
 
 .filter-bar .download-button {
@@ -114,10 +126,22 @@
 
 .summary-cards {
     padding: 10px;
-    border-radius: 10px;
-    text-align: center;
+    border-radius: 15px;
+    text-align: left;
+    height: 80px;
+    /* margin-top: 15px; */
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    /* border: 0px; */
+    
 }
-
+.graph-card{
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    height: 200px;
+    border-radius: 15px;
+}
+.graph-bar-one{
+    height: 200px;
+}
 .summary-cards .value {
     font-weight: bold;
     font-size: 20px;
@@ -134,14 +158,16 @@
     border-radius: 5px;
 }
 .graph-style{
-    width: 20px;
-
+    width: 500px;
+    height: 500px;
 }
 
 .side-card{
     height: 100%;
     text-align: center;
     padding: 10px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
 }
 .side-card .highlight-title{
     text-align: center;
@@ -165,7 +191,7 @@
     font-size: 20px;
 }
 
-.graph-style{
+/* .graph-style{
     height: 80vh;
     width: 100%;
-}
+} */
