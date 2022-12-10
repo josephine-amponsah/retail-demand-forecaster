@@ -27,6 +27,22 @@ layout = html.Div([
                       value = year_filter[-2],
                       id = "date-year-filter"
                   ),
+                dbc.Row([
+            dbc.Col([
+                  dcc.Dropdown(
+                      options = year_filter,
+                      value = year_filter[-2],
+                      id = "date-time-filter"
+                  ),
+                  ],  width=3),
+            dbc.Col([
+                  dcc.Dropdown(
+                      options = category_filter,
+                      value = category_filter[-1],
+                      id = "category-filter"
+                  ),
+                  ],  width=3)
+        ], justify="end"),
                     # dcc.Input()
                     
                     ]),
@@ -84,31 +100,35 @@ layout = html.Div([
             
         ]),
                 html.Br(),
-                dbc.Row([
-            # dbc.Col([
-            #       dcc.Dropdown(
-            #           options = year_filter,
-            #           value = year_filter[-2],
-            #           id = "date-time-filter"
-            #       ),
-            #       ],  width=3),
-            # dbc.Col([
-            #       dcc.Dropdown(
-            #           options = category_filter,
-            #           value = category_filter[-1],
-            #           id = "category-filter"
-            #       ),
-            #       ],  width=3)
-        ], justify="end"),
+                
                 dbc.Row([
                     dbc.Card([
-                        dcc.Graph(id="sales-over-time", className = "graph-bar-one")
+                        dcc.Graph(
+                            figure = {
+                            "data" : [],
+                            # "layout":{
+                            #     "title" :"Demand Trend", 
+                            #     "margin":{"t": 20, "b": 20, "l": 15, "r":15},
+                            #     # "width" : 1000,
+                            #     # "height": 150
+                                
+                            # },
+
+                            },
+                            id="sales-over-time", className = "graph-style")
                     ], className = "graph-card",outline= True, color = "light"),
                 ],),
                 html.Br(),
                 dbc.Row([
                     dbc.Card([
-                        dcc.Graph(id="sales-over-time", className = "graph-bar-one")
+                        dcc.Graph(
+                            figure = {
+                            "data" : [],
+                            "layout":{
+                                "margin":{"t": 20, "b": 20, "l": 15, "r":15}
+                            }
+                            },
+                            id="categorical-table", className = "graph-style")
                     ], className = "graph-card",outline= True, color = "light")
                 ])
             ], width= 9),
@@ -194,20 +214,15 @@ def salesTrend(date, category):
             {
                 "x": fig_data["month_year"],
                 "y": fig_data["Order_Demand"],
-                "type": "lines",
-                "hovertemplate": "%{y:.2f}<extra></extra>",
+                "type": "bar",
+                # "hovertemplate": "%{y:.2f}<extra></extra>",
             },
-        ],
-        "layout": {
-            "title": {
-                "text": "Demand Trend",
-                "x": 0.05,
-                "xanchor": "left",
-            },
-            #"xaxis": {"fixedrange": True},
-            # "yaxis": {"fixedrange": True},
-            "colorway": ["#17B897"],
-        },
+            ],
+        "layout":{
+                    "margin":{"t": 30, "b": 30, "l": 35, "r":25}
+                }
+        
+        
     }
     return [sales_trend_figure]
 

@@ -34,14 +34,28 @@ layout = html.Div([
             html.Br(),
             dbc.Row([
                 dbc.Card([
-                    dcc.Graph(id="bar-trans-count", className = "graph-style"),
-                ], className = "graph-card")
+                    dcc.Graph(
+                        figure = {
+                            "data" : [],
+                            "layout":{
+                                "margin":{"t": 20, "b": 20, "l": 15, "r":15}
+                            }
+                            },
+                        id="bar-trans-count", className = "graph-style"),
+                ], className = "graph-card-proj")
         ],),
             html.Br(),
             dbc.Row([
                 dbc.Card([
-                    dcc.Graph(id="bar-trans-count", className = "graph-style"),
-                ], className = "graph-card")
+                    dcc.Graph(
+                        figure = {
+                            "data" : [],
+                            "layout":{
+                                "margin":{"t": 20, "b": 20, "l": 15, "r":15}
+                            }
+                            },
+                        id="bar-trans-count", className = "graph-style"),
+                ], className = "graph-card-proj")
         ],)
     
             ], width = 5),
