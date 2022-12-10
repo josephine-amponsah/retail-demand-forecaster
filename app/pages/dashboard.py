@@ -215,13 +215,19 @@ def salesTrend(date, category):
                 "x": fig_data["month_year"],
                 "y": fig_data["Order_Demand"],
                 "type": "bar",
+                "marker": {
+           "color": "602BF8",
+           "radius": 15
+        #    'border-radius':'15px'
+       }
                 # "hovertemplate": "%{y:.2f}<extra></extra>",
             },
             ],
         "layout":{
-                    "margin":{"t": 30, "b": 30, "l": 35, "r":25}
-                }
-        
+                    "margin":{"t": 30, "b": 30, "l": 35, "r":25},
+                    # "borderRadius": '15px',
+                },
+       
         
     }
     return [sales_trend_figure]

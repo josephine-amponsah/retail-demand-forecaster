@@ -166,6 +166,7 @@
 .graph-style{
     /* width: 500px; */
     height: 90vh;
+    border-radius:15px
     /* margin: 0px; */
 }
 
