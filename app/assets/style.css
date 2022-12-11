@@ -139,27 +139,35 @@
     height: 200px;
     border-radius: 15px;
 }
-.graph-bar-one{
-    height: 200px;
+.graph-card-proj{
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    height: 260px;
+    border-radius: 15px;
 }
+
+/* .graph-bar-one{
+    height: 200px;
+} */
 .summary-cards .value {
     font-weight: bold;
     font-size: 20px;
     color: #071839;
 }
 
-.graph-section {
+/* .graph-section {
     background-color: #fafbfd;
-    /* width: 8; */
+    /* width: 8; 
     margin-left: 80px;
     margin-right: 80px;
     justify-content: center;
     padding: 20px;
     border-radius: 5px;
-}
+} */
 .graph-style{
-    width: 500px;
-    height: 500px;
+    /* width: 500px; */
+    height: 90vh;
+    border-radius:15px
+    /* margin: 0px; */
 }
 
 .side-card{
