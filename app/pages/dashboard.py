@@ -28,20 +28,20 @@ layout = html.Div([
                       id = "date-year-filter"
                   ),
                 dbc.Row([
-            dbc.Col([
+            dbc.Row([
                   dcc.Dropdown(
                       options = year_filter,
                       value = year_filter[-2],
                       id = "date-time-filter"
                   ),
-                  ],  width=3),
-            dbc.Col([
+                  ]),
+            dbc.Row([
                   dcc.Dropdown(
                       options = category_filter,
                       value = category_filter[-1],
                       id = "category-filter"
                   ),
-                  ],  width=3)
+                  ])
         ], justify="end"),
                     # dcc.Input()
                     

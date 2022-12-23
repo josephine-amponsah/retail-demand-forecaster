@@ -1,0 +1,206 @@
+@font-face {
+    font-family: Ubuntu-Regular;
+    src: url(Ubuntu-Regular.ttf);
+}
+@font-face {
+    font-family: Ubuntu-Light;
+    src: url(Ubuntu-Light.ttf);
+}
+
+
+.application{
+    background-color: #ffff;
+}
+.nav-card {
+    /* font-size: 14px; */
+    font-weight: bold;
+    font-family: Ubuntu-Regular;
+    height: 50px;
+    text-align: left;
+    padding-top: 5px;
+    padding-left: 50px; 
+    /* margin-top: 0px; */
+    /* color: #e6e8eb; */
+    background-color:  #ffff; 
+}
+.nav-card .logo{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.nav-card .nav-subtext {
+    font-size: 15px;
+    text-align: left;
+    align-content: left;
+    color: black;
+    font-family: Ubuntu-Light;
+}
+
+.nav-col {
+    height: 100vh;
+}
+
+.nav-col nav-text {
+    color: #e6e8eb;
+}
+
+.user-bar {
+    font-size: 10px;
+
+}
+
+.dashboard {
+    font-family: Ubuntu-Regular;
+    padding-right: 10px;
+    font-size: 12px;
+    background-color: #ffff;
+}
+
+.dashboard .deep {
+    font-weight: bold;
+}
+
+.icon-bar {
+    /* border: 1px solid red; */
+    font-size: 18px;
+    text-align: right;
+    /* width: 50px; */
+
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.filter-card {
+    /* text-align: right; */
+    /* display: flex;
+    justify-content: space-between;
+    border: 1px solid red; */
+    border-radius: 15px;
+    background-color: #602BF8;
+    height: 350px;
+    padding: 20px;
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    margin-right: 20px;
+    width: 145px;
+    color: #ffff;
+    font-family: Ubuntu-Light;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 3px 3px 5px 5px #EFEAFE;
+
+}
+
+.filter-bar .download-button {
+    background-color: #113c8e;
+    border-radius: 5px;
+    font-size: 10px;
+    /* align-content: right; */
+    /* align-self: right; */
+    display: flex;
+    justify-content: end;
+}
+
+.dashboard-date-filter {
+    font-size: 10px;
+    /* height: 100%; */
+    border-radius: 5px;
+
+    /* background-color: #cdd1d7; */
+}
+
+#dash-date-filter {
+    font-size: 10px;
+}
+
+.summary-section {
+    background-color: #fafbfd;
+    /* width: 8; */
+    margin-left: 80px;
+    margin-right: 80px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 5px;
+
+}
+
+.summary-cards {
+    padding: 10px;
+    border-radius: 15px;
+    text-align: left;
+    height: 80px;
+    /* margin-top: 15px; */
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    /* border: 0px; */
+    
+}
+.graph-card{
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    height: 200px;
+    border-radius: 15px;
+}
+.graph-card-proj{
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+    height: 260px;
+    border-radius: 15px;
+}
+
+/* .graph-bar-one{
+    height: 200px;
+} */
+.summary-cards .value {
+    font-weight: bold;
+    font-size: 20px;
+    color: #071839;
+}
+
+/* .graph-section {
+    background-color: #fafbfd;
+    /* width: 8; 
+    margin-left: 80px;
+    margin-right: 80px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 5px;
+} */
+.graph-style{
+    /* width: 500px; */
+    height: 90vh;
+    border-radius:15px
+    /* margin: 0px; */
+}
+
+.side-card{
+    height: 100%;
+    text-align: center;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px 5px #F8FAFB ;
+}
+.side-card .highlight-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: #071839;
+}
+
+.side-card .sub-title{
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: #071839;
+}
+
+.side-card .side-card-row{
+    padding: 10px;
+}
+
+.side-card .side-card-row .sub-title-main{
+    font-size: 20px;
+}
+
+/* .graph-style{
+    height: 80vh;
+    width: 100%;
+} */
