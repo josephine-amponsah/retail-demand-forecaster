@@ -19369,7 +19369,7 @@ body {
 }
 @media (max-width: 991px) {
   .page-wrapper {
-    margin-top: 60px;
+    margin-top: 20px;
   }
 }
 .page-wrapper .page-content {
@@ -19381,13 +19381,13 @@ body {
   padding-left: calc(var(--bs-gutter-x) * 0.5);
   margin-right: auto;
   margin-left: auto;
-  min-height: calc(100vh - 60px - 50px);
+  min-height: calc(100vh - 20px - 50px);
   flex-grow: 1;
 }
 .page-wrapper .page-content .content-nav-wrapper {
   padding: 0;
   position: sticky;
-  top: 80px;
+  top: 20px;
   height: calc(100vh - 6rem);
   overflow-y: auto;
   border-left: 1px solid #e9ecef;
@@ -19932,7 +19932,7 @@ body {
   }
 }
 .horizontal-menu.fixed-on-scroll + .page-wrapper {
-  padding-top: 60px;
+  padding-top: 20px;
 }
 .horizontal-menu.fixed-on-scroll .bottom-navbar {
   border-bottom: 1px solid #e9ecef;

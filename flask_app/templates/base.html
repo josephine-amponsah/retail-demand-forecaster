@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--
+Template Name: NobleUI - HTML Bootstrap 5 Admin Dashboard Template
+Author: NobleUI
+Website: https://www.nobleui.com
+Portfolio: https://themeforest.net/user/nobleui/portfolio
+Contact: nobleui123@gmail.com
+Purchase: https://1.envato.market/nobleui_admin
+License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
+-->
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="NobleUI">
+	<meta name="keywords" content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"> -->
+
+	<title>MARQET</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- End fonts -->
+
+	<!-- core:css -->
+	<link rel="stylesheet" href="../../../static/vendors/core/core.css">
+	<!-- endinject -->
+
+	<!-- Plugin css for this page -->
+	<!-- End plugin css for this page -->
+
+	<!-- inject:css -->
+	<link rel="stylesheet" href="../../../static/fonts/feather-font/css/iconfont.css">
+	<link rel="stylesheet" href="../../../static/vendors/flag-icon-css/css/flag-icon.min.css">
+	<!-- endinject -->
+
+  <!-- Layout styles -->  
+	<link rel="stylesheet" href="../../../static/css/demo3/style.css">
+  <!-- End layout styles -->
+
+  <link rel="shortcut icon" href="../../../static/images/favicon.png" />
+</head>
+<body>
+	<div class="main-wrapper">
+
+		<!-- partial:../../partials/_navbar.html -->
+		<div class="horizontal-menu">
+			<nav class="navbar top-navbar">
+				<div class="container">
+					<div class="navbar-content">
+						<a href="#" class="navbar-brand">
+							MARQ<span>ET</span>
+						</a>
+						<nav class="bottom-navbar">
+                            <div class="container">
+                                <ul class="nav page-navigation">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <i class="link-icon" data-feather="box"></i>
+                                            <span class="menu-title">Overview</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/analysis" class="nav-link">
+                                            <i class="link-icon" data-feather="mail"></i>
+                                            <span class="menu-title">Analytics</span>
+                                            <i class="link-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/project" class="nav-link">
+                                            <i class="link-icon" data-feather="inbox"></i>
+                                            <span class="menu-title">Projections</span>
+                                            <i class="link-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/tables" class="nav-link">
+                                            <i class="link-icon" data-feather="pie-chart"></i>
+                                            <span class="menu-title">Data</span>
+                                            <i class="link-arrow"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+						<ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i data-feather="bell"></i>
+                  <div class="indicator">
+                    <div class="circle"></div>
+                  </div>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img class="wd-30 ht-30 rounded-circle" src="https://via.placeholder.com/30x30" alt="profile">
+                </a>
+              </li>
+						</ul>
+						<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="horizontal-menu-toggle">
+							<i data-feather="menu"></i>					
+						</button>
+					</div>
+				</div>
+			</nav>
+			
+		</div>
+		<!-- partial -->
+	
+		<div class="page-wrapper">
+
+			<div class="page-content">
+                {% block content %}{% endblock %}
+			</div>
+
+			<!-- partial:../../partials/_footer.html -->
+			<footer class="footer border-top">
+        
+			</footer>
+			<!-- partial -->
+	
+		</div>
+	</div>
+
+	<!-- core:js -->
+	<script src="../../../static/vendors/core/core.js"></script>
+	<!-- endinject -->
+
+	<!-- Plugin js for this page -->
+	<!-- End plugin js for this page -->
+
+	<!-- inject:js -->
+	<script src="../../../static/vendors/feather-icons/feather.min.js"></script>
+	<script src="../../../static/js/template.js"></script>
+	<!-- endinject -->
+
+	<!-- Custom js for this page -->
+  <!-- End custom js for this page -->
+</body>
+</html>

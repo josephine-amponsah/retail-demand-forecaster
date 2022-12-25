@@ -28,12 +28,20 @@ app = Flask(__name__, template_folder= 'templates', static_folder= 'static')
 
 @app.route('/', methods=['GET'])
 def dropdown():
-    years = sales_data['year'].unique()
-    return render_template('dashboard.html', years = years)
+    return render_template('dashboard.html')
 
-@app.route('/order', methods=['GET'])
-def orders_page():
-    return render_template('orders.html')
+@app.route('/analysis', methods=['GET'])
+def analysis_page():
+    years = sales_data['year'].unique()
+    return render_template('analytics.html', years = years)
+
+@app.route('/project', methods=['GET'])
+def projections_page():
+    return render_template('proj.html')
+
+@app.route('/tables', methods=['GET'])
+def data_page():
+    return render_template('data.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
