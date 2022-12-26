@@ -30,11 +30,6 @@ app = Flask(__name__, template_folder= 'templates', static_folder= 'static')
 def dropdown():
     return render_template('dashboard.html')
 
-@app.route('/analysis', methods=['GET'])
-def analysis_page():
-    years = sales_data['year'].unique()
-    return render_template('analytics.html', years = years)
-
 @app.route('/project', methods=['GET'])
 def projections_page():
     return render_template('proj.html')
