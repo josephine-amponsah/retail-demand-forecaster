@@ -3,19 +3,13 @@
 <div class="page-wrapper">
     <div >
         <div class = "d-flex justify-content-end align-items-center flex-wrap grid-margin text-nowrap">
-            <!-- <button type="button" class="btn btn-outline-primary">Year</button> -->
-            <div class="dropdown me-2 mb-2 mb-md-0">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Year
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <select multiple="multiple">
-                    {% for year in years %}
-                    <option value="{{ year[0]}}">{{ year[1]}}</option>
-                    {% endfor %}
-                    </select>
-                       
-                </div>
+            <div class="btn-group me-2 d-none d-xl-block">
+              <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" type="button">Year<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu">
+                {%for year in years%}
+                <a class="dropdown-item" href="#">{{year}}</a>
+                {% endfor %}
+              </div>
             </div>
             <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
@@ -175,4 +169,37 @@
     </div>
 </div>
     
+{% endblock %}
+
+{% block script %}
+<!-- <script>
+  var ctx = document.getElementById("monthlySalesChart").getContext("2d");
+  var barChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: {{labels | safe}},
+      datasets: [
+        {
+          label: "Sales",
+          data: {{ value | safe}},
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: false
+    }
+  });
+</script> -->
+<!-- <script>
+	TESTER = document.getElementById('monthlySalesChart');
+	Plotly.newPlot( TESTER, [{
+	x: {{labels | safe}},
+	y: {{value | safe}} }], {
+	margin: { t: 0 } } );
+</script> -->
+<script>
+  var graph1 = {{graphJSON | safe}};
+  Plotly.plot("monthlySalesChart", graph1, {})
+</script>
 {% endblock %}
