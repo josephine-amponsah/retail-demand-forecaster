@@ -29,12 +29,13 @@ def dropdown():
     years = sales_data["year"].unique().tolist()
     return render_template('dashboard.html', years = years)
 def monthlyChart():
-    df = px.data.iris()
-    labels = sales_data["month_year"]
-    value = sales_data["Order_Demand"]
-    fig1 = px.scatter(x ="sepal_length", y = "sepal_width", data = df)
-    graphJSON = json.dumps(fig1, cls = plotly.utils.PlotlyJSONEncoder)
-    return render_template('dashboard.html', graphJSON = graphJSON)
+    # labels = sales_data["month_year"]
+    # value = sales_data["Order_Demand"]
+    fig1 = px.line(sales_data, x ="year", y = "Order_Demand", )
+    # df = px.data.iris()
+    # testfig = px.scatter(df, x= "sepal_width", y= "sepal_length")
+    gJSON = json.dumps(fig1, cls = plotly.utils.PlotlyJSONEncoder)
+    return render_template('dashboard.html', graphJSON = gJSON)
 
 @app.route('/project', methods=['GET'])
 def projections_page():
