@@ -50,9 +50,12 @@ def data_page():
     data = sales.groupby("month_year")["Order_Demand"].sum()
     info = data.reset_index(drop= False)
     # test_data = px.data.itis()
-    labels = info["month_year"]
-    values = info["Order_Demand"]
-    return render_template('data.html', labels = labels.to_json(), value = values.to_json())
+    x = []
+    y = []
+    for i, j in zip(info.month_year, info.Order_Demand):
+        x.append(i)
+        y.append(j)
+    return render_template('data.html', label = json.dumps(x), value = json.dumps(y))
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

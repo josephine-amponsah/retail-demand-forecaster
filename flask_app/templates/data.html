@@ -11,7 +11,7 @@
   
 <script>
     var ctx = document.getElementbyId("myChart").getContext("2d");
-    let axis1 = JSON.parse({{ labels | tojson }})
+    let axis1 = JSON.parse({{ label | tojson }})
     let axis2 = JSON.parse({{ value | tojson}})
 
         Chart.scaleService.updateScaleDefaults('linear', {
