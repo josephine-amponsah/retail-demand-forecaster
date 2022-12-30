@@ -25,17 +25,20 @@ app = Flask(__name__, template_folder= 'templates', static_folder= 'static')
 #     return render_template('dashboard.html')
 
 @app.route('/', methods=['GET', 'POST'])
-def dropdown():
-    years = sales_data["year"].unique().tolist()
-    return render_template('dashboard.html', years = years)
+# def dropdown():
+#     years = sales_data["year"].unique().tolist()
+#     return render_template('dashboard.html', years = years)
 def monthlyChart():
-    # labels = sales_data["month_year"]
-    # value = sales_data["Order_Demand"]
-    fig1 = px.line(sales_data, x ="year", y = "Order_Demand", )
-    # df = px.data.iris()
-    # testfig = px.scatter(df, x= "sepal_width", y= "sepal_length")
-    gJSON = json.dumps(fig1, cls = plotly.utils.PlotlyJSONEncoder)
-    return render_template('dashboard.html', graphJSON = gJSON)
+    
+    # fig1 = px.line(sales_data, x ="year", y = "Order_Demand", )
+    # years = sales_data["year"].unique().tolist()
+    # sales = sales_data[sales_data["year"] == 2017]
+    # data = sales.groupby("month_year")["Order_Demand"].sum()
+    # # test_data = px.data.itis()
+    # labels = sales["month_year"]
+    # values = data
+    # gJSON = json.dumps(labels, values)
+    return render_template('dashboard.html')
 
 @app.route('/project', methods=['GET'])
 def projections_page():
@@ -43,7 +46,13 @@ def projections_page():
 
 @app.route('/tables', methods=['GET'])
 def data_page():
-    return render_template('data.html')
+    sales = sales_data[sales_data["year"] == 2016]
+    data = sales.groupby("month_year")["Order_Demand"].sum()
+    info = data.reset_index(drop= False)
+    # test_data = px.data.itis()
+    labels = info["month_year"]
+    values = info["Order_Demand"]
+    return render_template('data.html', labels = labels.to_json(), value = values.to_json())
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

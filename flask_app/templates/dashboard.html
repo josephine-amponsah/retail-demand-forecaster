@@ -101,6 +101,7 @@
                     <h6 class="card-title mb-0">Monthly sales</h6>
                   </div>
                   <div class="test", id = "test" > 
+                    <canvas id = "chart1"></canvas>
                   </div>
                 </div> 
               </div>
@@ -176,6 +177,39 @@
 {% endblock %}
 
 {% block script %}
+<!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+  var graph1 = {{graphJSON | safe}};
+  Plotly.plot("test", graph1, {});
+</script> -->
+<script src="../../../static/vendors/chartjs/Chart.min.js"></script>
+<script type="text/javascript">
+  
+  var ctx = document.getElementbyId("chart1").getContext("2d");
+  var jsonData = {{dataJson | safe}};
+  // var labels = jsondata.jsonarray.map(function(e) {
+  //  return e.month_year;
+  // });
+  // var data = jsonfile.jsonarray.map(function(e) {
+  //   return e.Order_Demand;
+  // });
+  var config = {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+          label: 'Graph Line',
+          data: data,
+          backgroundColor: 'rgba(0, 119, 204, 0.3)'
+        }]
+    },
+    options: {
+      responsive: true,
+    }
+  };
+
+  var chart = new Chart(ctx, config);
+</script>
 <!-- <script>
   var ctx = document.getElementById("monthlySalesChart").getContext("2d");
   var barChart = new Chart(ctx, {

@@ -42,6 +42,8 @@ License: For each use you must have a valid license purchased only from above li
   <!-- End layout styles -->
 
   <link rel="shortcut icon" href="../../../static/images/favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.1/chart.min.js" integrity="sha512-MC1YbhseV2uYKljGJb7icPOjzF2k6mihfApPyPhEAo3NsLUW0bpgtL4xYWK1B+1OuSrUkfOTfhxrRKCz/Jp3rQ==" 
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 	<div class="main-wrapper">
@@ -139,17 +141,17 @@ License: For each use you must have a valid license purchased only from above li
 	<!-- endinject -->
 
 	<!-- Custom js for this page -->
-  <script src="../../../static/vendors/chartjs/Chart.min.js"></script>
-  <script src="../../../static/js/chartjs-light.js"></script>
-  
-</body>
-
+  <!-- <script src="../../../static/vendors/chartjs/Chart.min.js"></script>
+  <script src="../../../static/js/chartjs-light.js"></script> -->
   {% block script %}
   {% endblock %}
+</body>
+
+  
   <!-- End custom js for this page -->
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script type="text/javascript">
   var graph1 = {{graphJSON | safe}};
   Plotly.plot("test", graph1, {});
-</script>
+</script> -->
 </html>
