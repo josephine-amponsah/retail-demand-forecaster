@@ -9,19 +9,19 @@
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-<script>
-    var ctx = document.getElementbyId("myChart").getContext("2d");
-    let axis1 = JSON.parse({{ label | tojson }})
-    let axis2 = JSON.parse({{ value | tojson}})
+<script type = "text/javascript">
+    // var ctx = document.getElementbyId("myChart").getContext("2d");
+    axis1 = JSON.parse({{ label | tojson }})
+    axis2 = JSON.parse({{ value | tojson}})
 
-        Chart.scaleService.updateScaleDefaults('linear', {
-                ticks: {
-                    min: 0
-                }
-        });
+        // Chart.scaleService.updateScaleDefaults('linear', {
+        //         ticks: {
+        //             min: 0
+        //         }
+        // });
 
-    var fig = new Chart(ctx, {
-        type: 'bar',
+    new Chart(document.getElementbyId("myChart").getContext("2d"), {
+        type: 'line',
         data: {
             labels: axis1,
             datasets:[
@@ -32,6 +32,7 @@
             ]
         }, 
         options: {
+        // responsive: true,
         scales: {
             y: {
             beginAtZero: true
@@ -41,6 +42,18 @@
     });
 </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
 
  
   

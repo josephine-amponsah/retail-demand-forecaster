@@ -13,7 +13,7 @@ from flask_bootstrap import Bootstrap
 
 sales_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/sales.csv?raw=true"
 s=requests.get(sales_url).content
-sales_data =pd.read_csv(io.StringIO(s.decode('utf-8')))
+sales_data =pd.read_csv(r'../data/sales.csv')
 
 STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 # server = Flask(__name__)
