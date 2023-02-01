@@ -1,6 +1,7 @@
 import dash
 from dash import Dash, html, dcc, Input, Output, callback, State
 import plotly.express as px
+from dash import dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
 
@@ -11,19 +12,25 @@ dash.register_page(__name__, path = "/")
 sales = pd.read_csv("../data/sales.csv")
 returns = pd.read_csv("../data/returns.csv")
 
+
 year_filter =  sales["year"].unique().tolist()
+year_options = year_filter.sort() 
 category_filter = sales["Product_Category"].unique().tolist()
+warehouse_filter = sales["Warehouse"].unique().tolist()
+summary_table = pd.DataFrame.from_dict({
+    "categories":[], "orders":[], "returns":[], "net_sales":[], "yoy_growth":[]
+})
 
 revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best Performing Category']
 
 layout = html.Div([
     dbc.Row([
         dbc.Col([
-            html.Button( 'Year', id = 'date-year-filter',
-                 className="btn btn-outline-info") 
+            dcc.Dropdown( placeholder = 'Year', id = 'date-time-filter', options = year_filter,
+                 className="dbc year-dropdown .Select-control", value = 2016) 
             ], width=1),
         dbc.Col([
-            html.Button( 'Download Report', id = 'date-year-filter',
+            html.Button( 'Download Report', id = 'downloader',
                  className="btn btn-info") 
             ], width = 2),
     ], justify= 'end'),
@@ -84,8 +91,29 @@ layout = html.Div([
                 [
                     html.Div([
                         html.H6("HIGHLIGHTS", className="card-title"),
+                        dbc.Row([
+                        dbc.Row([ 
+                                 html.Span(className ="badge bg-success rounded-pill"),
+                                 html.P("Most Purchased Product")]),
+                        html.Div(["name"], id ="most-purchased-name"),
+                        html.Div(["orders"], id ="most-purchased-orders"),
+                        html.Div(["revenue"], id ="most-purchased-revenue"),
+                    ]),
+                    dbc.Row([
+                        html.Div(["Least Purchased Product"]),
+                        html.Div(["name"], id ="least-purchased-name"),
+                        html.Div(["orders"], id ="least-purchased-orders"),
+                        html.Div(["revenue"], id ="least-purchased-revenue"),
+                    ]),
+                    dbc.Row([
+                        html.Div(["Most Returned Product"]),
+                        html.Div(["name"], id ="most-returned-name"),
+                        html.Div(["orders"], id ="most-returned-orders"),
+                        html.Div(["revenue"], id ="most-returned-revenue"),
+                    ])
                         
-                    ], className="card-body")
+                    ], className="card-body"),
+                    
                 ], className= "card border-light mb-3"
             ), width=4
         ),
@@ -96,7 +124,9 @@ layout = html.Div([
                 [
                     html.Div([
                         html.H6("WAREHOUSES", className="card-title"),
-                        
+                        html.P("filters to rate warehouses"),
+                        html.P("Warehouse names"),
+                        html.P("Revenue per warehouse"),
                     ], className="card-body")
                 ], className= "card bg-light mb-3"
             ), width=4
@@ -104,11 +134,31 @@ layout = html.Div([
         dbc.Col(
             html.Div(
                 [
-                    html.Div([
-                        html.H6("DETAILS", className="card-title"),
+                    dbc.Row([
+                        dbc.Col([
+                            html.Div([
+                                html.H6("DETAILS", className="card-title"),
+                            ], className="card-body"),
+                        ], width=6),
                         
-                    ], className="card-body")
-                ], className= "card bg-light mb-3"
+                        dbc.Col([
+                            dbc.Row([
+                                dbc.Col([
+                                    dcc.Dropdown( placeholder = 'Warehouse', id = 'table-category-filter', options = warehouse_filter,
+                                        className="dbc year-dropdown .Select-control") 
+                                ], width=8),
+                                dbc.Col([
+                                    html.Button( 'Filter', id = 'table-filter',
+                                        className="btn btn-info") 
+                                ], width = 4),
+                            ])
+                            
+                        ], width=6)
+                        
+                    ], justify= "between", className="details-table-nav"),
+                    
+                    dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True)
+                ], className= "card bg-light mb-3 details-table-section"
             ), width=8
         ),
     ])
@@ -142,40 +192,38 @@ layout = html.Div([
     
 #     return [total_sales], [total_returns], [best_warehouse], [best_category]
 
-# @callback(
-#     [Output("sales-over-time", "figure")],
-#     Input("date-time-filter", "value"),
-#     Input("category-filter", "value"),
-# )
-
-# def salesTrend(date, category):
-#     masks = (sales.year == date) & (sales.Product_Category == category)
-#     filtered_data = sales.loc[masks, :]
-#     filtered_data = filtered_data.fillna(0)
+@callback(
+    Output("monthly-sales-chart", "figure"),
+    Input("date-time-filter", "value"),
     
-#     fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
-#     sales_trend_figure = {
-#         "data": [
-#             {
-#                 "x": fig_data["month_year"],
-#                 "y": fig_data["Order_Demand"],
-#                 "type": "bar",
-#                 "marker": {
-#            "color": "602BF8",
-#            "radius": 15
-#         #    'border-radius':'15px'
-#        }
-#                 # "hovertemplate": "%{y:.2f}<extra></extra>",
-#             },
-#             ],
-#         "layout":{
-#                     "margin":{"t": 30, "b": 30, "l": 35, "r":25},
-#                     # "borderRadius": '15px',
-#                 },
-       
+)
+
+def salesTrend(date):
+    # masks = (sales.year == date) & (sales.Product_Category == category)
+    # filtered_data = sales.loc[masks, :]
+    # filtered_data = filtered_data.fillna(0)
+    
+    # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
+    data = sales[sales["year"] == date]
+    fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum')
+    
+    fig.update_layout(
+        paper_bgcolor = '#222',
+        margin={'l':20, 'r':20, 'b':0},
+        font_color='white',
+        font_size=18,
+        hoverlabel={'bgcolor':'white', 'font_size':16, },
+        bargap=.25
         
-#     }
-#     return [sales_trend_figure]
+    )
+    fig.update_traces(
+        # marker_bgcolor="#93c"
+        marker = {
+            'color': '#93c',
+        }
+        )
+    
+    return fig
 
 # @callback(
 #     [Output("main-returned", "children"), Output("main-purchased", "children"), Output("main-lowest", "children"), 

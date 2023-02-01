@@ -11028,3 +11028,27 @@ legend {
 .popover-title {
   border-bottom: none;
 }
+
+
+.year-dropdown{
+  border: solid 1px;
+  border-color: #93c;
+  background-color: var(--bs-body-color-rgb);
+  /* border: var(--bs-btn-border-width) solid var(--bs-btn-border-color); */
+  border-radius: 0.375rem;
+  /* background-color: var(--bs-btn-bg); */
+}
+/* input box */
+/* .dbc .Select-control {
+  background-color: var(--bs-body-bg) !important;
+  border: solid rgba(var(--bs-btn-border-radius)) 1px !important;
+  border-radius: var(--bs-btn-border-radius) !important;
+} */
+
+.details-table-section{
+  padding: 15px;
+}
+
+.details-table-nav{
+  padding-bottom: 15px;
+}
