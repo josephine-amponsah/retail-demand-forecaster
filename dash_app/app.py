@@ -14,7 +14,7 @@ returns = pd.read_csv("../data/returns.csv")
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.css"
 
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
-                dbc.themes.CYBORG, dbc.icons.BOOTSTRAP, dbc_css])
+                dbc.themes.CYBORG, dbc.icons.BOOTSTRAP, dbc_css, dbc.icons.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 server = app.server
 # app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 

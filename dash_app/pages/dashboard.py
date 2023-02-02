@@ -4,6 +4,7 @@ import plotly.express as px
 from dash import dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
 
 # app = Dash(__name__)
 dash.register_page(__name__, path = "/")
@@ -28,7 +29,7 @@ layout = html.Div([
         dbc.Col([
             dcc.Dropdown( placeholder = 'Year', id = 'date-time-filter', options = year_filter,
                  className="dbc year-dropdown .Select-control", value = 2016) 
-            ], width=1),
+            ], width=2),
         dbc.Col([
             html.Button( 'Download Report', id = 'downloader',
                  className="btn btn-info") 
@@ -37,98 +38,200 @@ layout = html.Div([
     html.Br(),
     # row with summary cards
     dbc.Row([
-        dbc.Col(
-            html.Div(
-                [
-                    html.Div([
-                        html.P("RETURNS", className="card-text"),
-                        html.H5("3.65 M", className="card-title"),
-                        html.P("15.89 %", className="card-text")
-                        
-                    ], className="card-body")
-                ], className= "card bg-light mb-3"
-            ), width=4
+        dbc.Col([
+            dbc.Row([
+                dbc.Col(
+                    html.Div(
+                        [
+                            html.Div([
+                                html.P("Orders", className="card-text"),
+                                dbc.Row([
+                                    dbc.Col([
+                                        html.H5("501.36 K", className="card-title"),
+                                        html.P("15.89 %", className="card-text")
+                                    ], width = 8),
+                                    dbc.Col([
+                                        html.I(className="bi bi-cart-check fa-3x icon-main")
+                                    ], width = 4)
+                                ])
+                            ], className="card-body")
+                        ], className= "card bg-light mb-3"
+                    ), width=4
         ),
-        dbc.Col(
+                dbc.Col(
+                    html.Div(
+                        [
+                            html.Div([
+                                html.P("Returns", className="card-text"),
+                                dbc.Row([
+                                    dbc.Col([
+                                        html.H5("15.732 K", className="card-title"),
+                                        html.P("15.89 %", className="card-text")
+                                    ], width = 8),
+                                    dbc.Col([
+                                        html.I(className = "bi bi-arrow-left-square fa-3x icon-negative")
+                                    ], width = 4)
+                                ])
+                            ], className="card-body")
+                        ], className= "card bg-light mb-3"
+                    ), width=4
+                ),
+                dbc.Col(
+                    html.Div(
+                        [
+                            html.Div([
+                                html.P("Revenue", className="card-text"),
+                                dbc.Row([
+                                    dbc.Col([
+                                        html.H5("$3.65 M", className="card-title"),
+                                        html.P("15.89 %", className="card-text")
+                                    ], width = 8),
+                                    dbc.Col([
+                                        html.I(className = "bi bi-cash-coin fa-3x icon-positive")
+                                    ], width = 4)
+                                ])
+                            ], className="card-body")
+                        ], className= "card bg-light mb-3"
+                    ), width=4
+                ),
+            ]),
+            dbc.Row([
+                dbc.Col(
+                    html.Div(
+                        [
+                            html.Div([
+                                html.H6("Monthly Sales", className="card-title"),
+                                dcc.Graph( id = "monthly-sales-chart")
+                            ], className="card-body")
+                        ], className= "card bg-light mb-3"
+                    ), width=12
+                ),
+            ]),
+        ],),
+        dbc.Col([
             html.Div(
                 [
                     html.Div([
-                        html.P("RETURNS", className="card-text"),
-                        html.H5("3.65 M", className="card-title"),
-                        html.P("15.89 %", className="card-text")
-                        
-                    ], className="card-body")
-                ], className= "card bg-light mb-3"
-            ), width=4
-        ),
-        dbc.Col(
-            html.Div(
-                [
-                    html.Div([
-                        html.P("RETURNS", className="card-text"),
-                        html.H5("3.65 M", className="card-title"),
-                        html.P("15.89 %", className="card-text")
-                        
-                    ], className="card-body")
-                ], className= "card bg-light mb-3"
-            ), width=4
-        )
-    ]),
-    #row with graph and highlights card
-    dbc.Row([
-        dbc.Col(
-            html.Div(
-                [
-                    html.Div([
-                        html.H6("MONTHLY SALES", className="card-title"),
-                        dcc.Graph( id = "monthly-sales-chart")
-                    ], className="card-body")
-                ], className= "card bg-light mb-3"
-            ), width=8
-        ),
-        dbc.Col(
-            html.Div(
-                [
-                    html.Div([
-                        html.H6("HIGHLIGHTS", className="card-title"),
+                        html.H6("Highlights", className="card-title"),
+                        html.Br(),
                         dbc.Row([
-                        dbc.Row([ 
-                                 html.Span(className ="badge bg-success rounded-pill"),
-                                 html.P("Most Purchased Product")]),
-                        html.Div(["name"], id ="most-purchased-name"),
-                        html.Div(["orders"], id ="most-purchased-orders"),
-                        html.Div(["revenue"], id ="most-purchased-revenue"),
-                    ]),
-                    dbc.Row([
-                        html.Div(["Least Purchased Product"]),
-                        html.Div(["name"], id ="least-purchased-name"),
-                        html.Div(["orders"], id ="least-purchased-orders"),
-                        html.Div(["revenue"], id ="least-purchased-revenue"),
-                    ]),
-                    dbc.Row([
-                        html.Div(["Most Returned Product"]),
-                        html.Div(["name"], id ="most-returned-name"),
-                        html.Div(["orders"], id ="most-returned-orders"),
-                        html.Div(["revenue"], id ="most-returned-revenue"),
-                    ])
-                        
+                                dbc.Col([
+                                    html.I(className="bi bi-arrow-up-right-square-fill fa-2x icon-main opacity")
+                                ], width = 2),
+                                dbc.Col([
+                                    dbc.Row([
+                                        dbc.Col(["Highest Grossing Category"])
+                                    
+                                    ]),
+                                    dbc.Row([
+                                        dbc.Col(["Name"], id ="hightest-cat-name", className = "border-right", width =4),
+                                        dbc.Col(["Orders"], id ="highest-cat-orders", className = "border-right", width =4),
+                                        dbc.Col(["Revenue"], id ="highest-cat-revenue", width =4),
+                                    ]),
+                                    # html.Div(["name"],),
+                                    # html.Div(["orders"], id ="most-purchased-orders"),
+                                    # html.Div(["revenue"], id ="most-purchased-revenue"),
+                                ], width = 10)
+                        ]),
+                        html.Hr(),
+                        dbc.Row([
+                            dbc.Col([
+                                html.I(className="bi bi-arrow-up-right-square-fill fa-2x icon-main opacity")
+                            ], width = 2),
+                            dbc.Col([
+                                dbc.Row([
+                                    dbc.Col(["Most Purchased Product"])
+                                
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(["Name"], id ="most-purchased-name", className = "border-right", width =4),
+                                    dbc.Col(["Orders"], id ="most-purchased-orders", className = "border-right", width =4),
+                                    dbc.Col(["Revenue"], id ="most-purchased-revenue", width =4),
+                                ]),
+                                # html.Div(["name"],),
+                                # html.Div(["orders"], id ="most-purchased-orders"),
+                                # html.Div(["revenue"], id ="most-purchased-revenue"),
+                            ], width = 10)
+                            
+                            
+                        ]),
+                        html.Hr(),
+                        dbc.Row([
+                            dbc.Col([
+                                html.I(className="bi bi-arrow-down-left-square-fill fa-2x icon-main opacity")
+                            ], width = 2),
+                             dbc.Col([
+                                    dbc.Row([
+                                        dbc.Col(["Least Purchased Product"])
+                                    
+                                    ]),
+                                    dbc.Row([
+                                        dbc.Col(["Name"], id ="least-purchased-name", className = "border-right", width =4),
+                                        dbc.Col(["Orders"], id ="least-purchased-orders", className = "border-right", width =4),
+                                        dbc.Col(["Revenue"], id ="least-purchased-revenue", width =4),
+                                    ]),
+                                    # html.Div(["name"],),
+                                    # html.Div(["orders"], id ="most-purchased-orders"),
+                                    # html.Div(["revenue"], id ="most-purchased-revenue"),
+                                ], width = 10)
+                        ]),
+                        html.Hr(),
+                        dbc.Row([
+                            dbc.Col([
+                                html.I(className="bi bi-arrow-left-square-fill fa-2x icon-main opacity")
+                            ], width = 2),
+                             dbc.Col([
+                                    dbc.Row([
+                                        dbc.Col(["Most Returned Product"])
+                                    
+                                    ]),
+                                    dbc.Row([
+                                        dbc.Col(["Name"], id ="most-returned-name", className = "border-right", width =4),
+                                        dbc.Col(["Orders"], id ="most-returned-orders", className = "border-right", width =4),
+                                        dbc.Col(["Revenue"], id ="most-returned-revenue", width =4),
+                                    ]),
+                                    # html.Div(["name"],),
+                                    # html.Div(["orders"], id ="most-purchased-orders"),
+                                    # html.Div(["revenue"], id ="most-purchased-revenue"),
+                                ], width = 10)
+                        ]),
+                        html.Br(),
                     ], className="card-body"),
                     
                 ], className= "card border-light mb-3"
-            ), width=4
-        ),
-    ]),
+            )
+        ,
+            html.Div([
+                html.Div([
+                    html.Div(["Gauge Chart"]),
+                    dcc.Graph(id = "gauge-chart")
+                ], className = "card-body")
+            ], className="card border-light mb-3"),
+            
+        ],width=4, className= "fixed-cards"),
+        
+    ], className = "fixed-section"),
+    #row with graph and highlights card
+    
     dbc.Row([
         dbc.Col(
             html.Div(
                 [
                     html.Div([
-                        html.H6("WAREHOUSES", className="card-title"),
-                        html.P("filters to rate warehouses"),
-                        html.P("Warehouse names"),
-                        html.P("Revenue per warehouse"),
+                        html.H6("Top 10 Warehouses", className="card-title"),
+                        html.Br(),
+                        dbc.Row([
+                                dbc.Col([
+                                    html.I(className="bi bi-arrow-up-right-square-fill icon-main opacity")
+                                ], width = 2),
+                                
+                                dbc.Col(["Name"]),
+                                dbc.Col(["Orders"], id ="warehouse-orders", className = ""),
+                                dbc.Col(["Revenue"], id ="warehouse-revenue"),
+                                
+                        ]),
                     ], className="card-body")
-                ], className= "card bg-light mb-3"
+                ], className= "card bg-light mb-3 second-section"
             ), width=4
         ),
         dbc.Col(
@@ -137,7 +240,7 @@ layout = html.Div([
                     dbc.Row([
                         dbc.Col([
                             html.Div([
-                                html.H6("DETAILS", className="card-title"),
+                                html.H6("Data", className="card-title"),
                             ], className="card-body"),
                         ], width=6),
                         
@@ -158,10 +261,10 @@ layout = html.Div([
                     ], justify= "between", className="details-table-nav"),
                     
                     dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True)
-                ], className= "card bg-light mb-3 details-table-section"
+                ], className= "card bg-light mb-3 details-table-section second-section"
             ), width=8
-        ),
-    ])
+        , ),
+    ],  )
 
 
 ])
@@ -225,6 +328,28 @@ def salesTrend(date):
     
     return fig
 
+@callback(
+    Output("gauge-chart", "figure"),
+    Input("date-time-filter", "value"),
+    
+)
+def gauge(value):
+    labels = ['Oxygen','Hydrogen']
+    values = [4500, 2500]
+
+# Use `hole` to create a donut-like pie chart
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.7)])
+    
+    fig.update_traces(
+        marker_colors= ["#93c", "#f80"]
+    )
+    
+    fig.update_layout(
+        margin={'l':20, 'r':20, 'b':0, 't':0},
+        height = 200
+    )
+    return fig
+    
 # @callback(
 #     [Output("main-returned", "children"), Output("main-purchased", "children"), Output("main-lowest", "children"), 
 #      Output("details-returned", "children"), Output("details-purchased", "children"), Output("details-lowest", "children")],

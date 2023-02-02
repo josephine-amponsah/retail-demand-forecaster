@@ -27,8 +27,12 @@ layout = html.Div([
             html.Div(
                 [
                     html.Div([
-                        html.H6("Forecast", className="card-title"),
-                        html.P("forecast date range"),
+                        html.H6("Forecaster", className="card-title"),
+                        dbc.Row([
+                            html.P("Date Range"),
+                            dcc.DatePickerRange(className="date-picker dbc")
+                        ]),
+                        
                         html.P("Warehouses"),
                         html.P("Categories"),
                         html.P("forecast target(demand/returns/revenue)")
@@ -41,7 +45,7 @@ layout = html.Div([
                 [
                     html.Div([
                         html.H6("Projected Demand", className="card-title"),
-                        dcc.Graph( id = "projected-demand-chart")
+                        # dcc.Graph( id = "projected-demand-chart")
                     ], className="card-body")
                 ], className= "card bg-light mb-3"
             ), width=8
@@ -80,35 +84,37 @@ layout = html.Div([
 
 
 ])
-@callback(
-    Output("projected-demand-chart", "figure"),
-    Input("date-time-filter", "value"),
-    
-)
 
-def salesTrend(date):
-    # masks = (sales.year == date) & (sales.Product_Category == category)
-    # filtered_data = sales.loc[masks, :]
-    # filtered_data = filtered_data.fillna(0)
+
+# @callback(
+#     Output("projected-demand-chart", "figure"),
+#     Input("date-time-filter", "value"),
     
-    # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
-    data = sales[sales["year"] == date]
-    fig = px.line(data, y="Order_Demand", x="month_year", template="cyborg")
+# )
+
+# def salesTrend(date):
+#     # masks = (sales.year == date) & (sales.Product_Category == category)
+#     # filtered_data = sales.loc[masks, :]
+#     # filtered_data = filtered_data.fillna(0)
     
-    fig.update_layout(
-        paper_bgcolor = '#222',
-        margin={'l':20, 'r':20, 'b':0},
-        font_color='white',
-        font_size=18,
-        hoverlabel={'bgcolor':'white', 'font_size':16, },
-        bargap=.25
+#     # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
+#     data = sales[sales["year"] == date]
+#     fig = px.line(data, y="Order_Demand", x="month_year", template="cyborg")
+    
+#     fig.update_layout(
+#         paper_bgcolor = '#222',
+#         margin={'l':20, 'r':20, 'b':0},
+#         font_color='white',
+#         font_size=18,
+#         hoverlabel={'bgcolor':'white', 'font_size':16, },
+#         bargap=.25
         
-    )
-    fig.update_traces(
-        # marker_bgcolor="#93c"
-        marker = {
-            'color': '#93c',
-        }
-        )
+#     )
+#     fig.update_traces(
+#         # marker_bgcolor="#93c"
+#         marker = {
+#             'color': '#93c',
+#         }
+#         )
     
-    return fig
+#     return fig
