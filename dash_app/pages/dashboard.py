@@ -308,15 +308,17 @@ def salesTrend(date):
     
     # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
     data = sales[sales["year"] == date]
-    fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum')
+    fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum', 
+                       labels = {'Order_Demand':'Orders', "month_year": "Month-Year"})
     
     fig.update_layout(
         paper_bgcolor = '#222',
         margin={'l':20, 'r':20, 'b':0},
         font_color='white',
-        font_size=18,
-        hoverlabel={'bgcolor':'white', 'font_size':16, },
-        bargap=.25
+        # font_size=18,
+       
+        hoverlabel={'bgcolor':'black', 'font_size':12, },
+        bargap=.40
         
     )
     fig.update_traces(
@@ -325,6 +327,10 @@ def salesTrend(date):
             'color': '#93c',
         }
         )
+    fig.update_xaxes( # the y-axis is in dollars
+        dtick= 30, 
+        showgrid=True
+    )
     
     return fig
 

@@ -11031,7 +11031,7 @@ legend {
 
 
 .year-dropdown{
-  border: solid 1px;
+  border: solid 2px;
   border-color: #93c;
   background-color: var(--bs-body-color-rgb);
   /* border: var(--bs-btn-border-width) solid var(--bs-btn-border-color); */
@@ -11097,5 +11097,59 @@ legend {
   width: 100% !important;
   padding-left: 3px !important;
   padding-right: 3px !important;
+  padding-top: 0px !important;
+  padding-bottom: 3px !important;
+  height: 20px !important;
   /* background-color: var(--bs-btn-bg); */
+}
+.dbc .DateRangePickerInput {
+  background-color: var(--bs-body-bg);
+  height: 24px;
+  margin:0px;
+  padding: 0px;
+  border-radius: 5px;
+}
+.dbc .DateInput_input {
+  /* background-color: var(--bs-body-bg); */
+  font-family: var(--bs-body-font-family);
+  height: 20px;
+  font-size: 15px;
+  /* margin: 0px; */
+  /* padding-top: 2px;
+  padding-bottom: 2px; */
+  border-color: var(--bs-body-bg) ;
+  /* border-start-start-radius: 5px;
+  border-start-end-radius: 5px; */
+}
+.dbc .DateInput_fangStroke {
+  stroke: var(--bs-body-bg);
+  fill: transparent;
+}
+/* .dbc .DateRangePickerInput__withBorder {
+  /* border-color: rgba(100, 100, 100, 0.4) !important; 
+  border-color: #93c !important; 
+} */
+/* .dbc .DateInput_input__focused {
+  border-bottom: 0px ;
+} */
+.dbc .SingleDatePickerInput__withBorder {
+  border-color: var(--bs-body-bg) !important;
+  background-color: transparent !important;
+  border:0px !important;
+  color: var(--bs-body-bg) !important;
+}
+
+.dbc .Select-control{
+  /* --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important; */
+  /* opacity : 0.7; */
+  background-color: #222 !important;
+}
+.dbc .Select-input {
+  color: #222 !important;
+}
+.dbc .textarea {
+  background-color: #222 !important;
+  color: var(--bs-body-color) !important;
+  border-color: rgba(100, 100, 100, 0.4) !important;
 }

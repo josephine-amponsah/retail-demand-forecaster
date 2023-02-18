@@ -7,10 +7,17 @@ from dash.dependencies import Input, Output
 import os
 from dash_bootstrap_templates import load_figure_template
 load_figure_template("cyborg")
+import requests
+import io
 
 # from app.pages import sales
-sales = pd.read_csv("../data/sales.csv")
-returns = pd.read_csv("../data/returns.csv")
+
+sales_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/sales.csv?raw=true"
+sales=requests.get(sales_url).content
+sales_data =pd.read_csv(io.StringIO(sales.decode('utf-8')))
+returns_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/returns.csv?raw=true"
+returns=requests.get(returns_url).content
+returns_data =pd.read_csv(io.StringIO(returns.decode('utf-8')))
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.css"
 
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[

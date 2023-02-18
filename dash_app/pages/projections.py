@@ -29,13 +29,17 @@ layout = html.Div([
                     html.Div([
                         html.H6("Forecaster", className="card-title"),
                         dbc.Row([
-                            html.P("Date Range"),
-                            dcc.DatePickerRange(className="date-picker dbc")
+                            html.Div("Date Range"),
+                            dbc.Col([dbc.Input(className="year-dropdown")], width = 4)
                         ]),
                         
-                        html.P("Warehouses"),
+                        html.Div("Warehouses"),
+                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
                         html.P("Categories"),
-                        html.P("forecast target(demand/returns/revenue)")
+                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
+                        html.P("forecast target(demand/returns/revenue)"),
+                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
+                        html.Button(className="btn btn-info")
                     ], className="card-body")
                 ], className= "card border-light mb-3"
             ), width=4
