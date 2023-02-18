@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1> This is the Data Tables page</h1>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+<script type = "text/javascript">
+    // var ctx = document.getElementbyId("myChart").getContext("2d");
+    axis1 = JSON.parse({{ label | tojson }})
+    axis2 = JSON.parse({{ value | tojson}})
+
+        // Chart.scaleService.updateScaleDefaults('linear', {
+        //         ticks: {
+        //             min: 0
+        //         }
+        // });
+
+    new Chart(document.getElementbyId("myChart").getContext("2d"), {
+        type: 'line',
+        data: {
+            labels: axis1,
+            datasets:[
+                {
+                    label: "Sales over Time",
+                    data: axis2,
+                }
+            ]
+        }, 
+        options: {
+        // responsive: true,
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  

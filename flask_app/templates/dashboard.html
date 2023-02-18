@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-wrapper">
+    <div >
+        <div class = "d-flex justify-content-end align-items-center flex-wrap grid-margin text-nowrap">
+            <div class="btn-group me-2 d-none d-xl-block">
+              <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" type="button">Year<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu">
+                {%for year in years%}
+                <a class="dropdown-item" href="#">{{year}}</a>
+                {% endfor %}
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+                Download Report
+            </button>
+        </div>
+        <!-- summary cards row -->
+        <div class = "row">
+            <div class = "col-12 col-xl-12 stretch-card">
+                <div class = "row flex-grow-1">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">Orders</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-md-12 col-xl-5">
+                                      <h3 class="mb-2" id = "ordersCount">3,897</h3>
+                                      <div class="d-flex align-items-baseline">
+                                        <p class="text-success">
+                                          <span id="ordersRate">+3.3%</span>
+                                          <i data-feather="arrow-up" class="icon-sm mb-1"></i>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 col-xl-7">
+                                      <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">Returns</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-md-12 col-xl-5">
+                                      <h3 class="mb-2" id = "returnsValue">3,897</h3>
+                                      <div class="d-flex align-items-baseline">
+                                        <p class="text-success">
+                                          <span id = "returnsRate">+3.3%</span>
+                                          <i data-feather="arrow-up" class="icon-sm mb-1"></i>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 col-xl-7">
+                                      <div id="returnsChart" class="mt-md-3 mt-xl-0"></div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">Growth Rate</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-md-12 col-xl-5">
+                                      <h3 class="mb-2" id = "growthRateValue">3,897</h3>
+                                      <div class="d-flex align-items-baseline">
+                                        <p class="text-success">
+                                          <span id = "year-on-year-rate">+3.3%</span>
+                                          <i data-feather="arrow-up" class="icon-sm mb-1"></i>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 col-xl-7">
+                                      <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- monthly sales graph row -->
+        <div class="row">
+            <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <h6 class="card-title mb-0">Monthly sales</h6>
+                  </div>
+                  <div class="test", id = "test" > 
+                    <canvas id = "chart1"></canvas>
+                  </div>
+                </div> 
+              </div>
+            </div>
+            <div class="col-lg-5 col-xl-4 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-baseline">
+                    <h6 class="card-title mb-0">Highlights</h6>
+                  </div>
+                  <div id="storageChart"></div>
+                  <div class="row mb-3">
+                    <div class="col-6 d-flex justify-content-end">
+                      <div>
+                        <label class="d-flex align-items-center justify-content-end tx-10 text-uppercase fw-bolder">Total storage <span class="p-1 ms-1 rounded-circle bg-secondary"></span></label>
+                        <h5 class="fw-bolder mb-0 text-end">8TB</h5>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div>
+                        <label class="d-flex align-items-center tx-10 text-uppercase fw-bolder"><span class="p-1 me-1 rounded-circle bg-primary"></span> Used storage</label>
+                        <h5 class="fw-bolder mb-0">~5TB</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- warehouse data tables row -->
+        <div class="row">
+            <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <h6 class="card-title mb-0">Warehouses</h6>
+                  </div>
+                  <div class="d-flex flex-column" id = "warehouseChart">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-xl-8 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <h6 class="card-title mb-0">Details</h6>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th class="pt-0">#</th>
+                          <th class="pt-0">Warehouse</th>
+                          <th class="pt-0">Demands</th>
+                          <th class="pt-0">Returns</th>
+                          <th class="pt-0">Net Sales</th>
+                          <th class="pt-0">Year-on-Year</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div> 
+              </div>
+            </div>
+        </div> 
+        <!-- <div class = "test-chart" id = "test-chart">
+        </div> -->
+        
+    </div>
+</div>
+    
+{% endblock %}

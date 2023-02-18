@@ -5,3 +5,7 @@ notebooks/test_model.ipynb
 bin/
 app/pages/pricing.py
 notebooks/test-models.ipynb
+
+dash_app/assets/dcc-bootstrap.css
+
+fore/
