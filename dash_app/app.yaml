@@ -1,10 +1,10 @@
-name: app
-runtime: python39
-services:
-- environment_slug: python
-  github:
-    branch: master
-    deploy_on_push: true
-    repo: retail-demand-forecaster/dash_app
-  name: app
-entrypoint: gunicorn --worker-tmp-dir /dev/shm app.wsgi --timeout 120
+# name: app
+# runtime: python39
+# services:
+# - environment_slug: python
+#   github:
+#     branch: master
+#     deploy_on_push: true
+#     repo: retail-demand-forecaster/dash_app
+#   name: app
+# entrypoint: gunicorn --worker-tmp-dir /dev/shm app.wsgi --timeout 120
