@@ -1,11 +1,14 @@
 .venv/
 env/
-app/pages/__pycache__/
+dash_app/pages/__pycache__/
 notebooks/test_model.ipynb
 bin/
 app/pages/pricing.py
 notebooks/test-models.ipynb
-
+.vscode/
 dash_app/assets/dcc-bootstrap.css
-
+notebooks/try.ipynb
 fore/
+dash_app/__pycache__/
+modules/__pycache__/
+dash_app/cache-directory/

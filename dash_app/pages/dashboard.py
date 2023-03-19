@@ -5,19 +5,23 @@ from dash import dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
+import sys
+import requests
+import io
+from flask_caching import Cache
+sys.path.insert(0, '../modules')
+
+
 
 # app = Dash(__name__)
 dash.register_page(__name__, path = "/")
-#app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
-
-sales = pd.read_csv("../data/sales.csv")
-returns = pd.read_csv("../data/returns.csv")
-
-
-year_filter =  sales["year"].unique().tolist()
-year_options = year_filter.sort() 
-category_filter = sales["Product_Category"].unique().tolist()
-warehouse_filter = sales["Warehouse"].unique().tolist()
+# app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
+# sales = app.sales_data()
+# # store_sales = dcc.Store(id = 'sales-store', data = sales_data.to_dict('records'))
+# year_filter =  sales["year"].unique().tolist()
+# year_options = year_filter.sort() 
+# category_filter = sales["Product_Category"].unique().tolist()
+# warehouse_filter = sales["Warehouse"].unique().tolist()
 summary_table = pd.DataFrame.from_dict({
     "categories":[], "orders":[], "returns":[], "net_sales":[], "yoy_growth":[]
 })
@@ -25,9 +29,10 @@ summary_table = pd.DataFrame.from_dict({
 revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best Performing Category']
 
 layout = html.Div([
+    dcc.Store(id = "sales-data"),
     dbc.Row([
         dbc.Col([
-            dcc.Dropdown( placeholder = 'Year', id = 'date-time-filter', options = year_filter,
+            dcc.Dropdown( placeholder = 'Year', id = 'date-time-filter',
                  className="dbc year-dropdown .Select-control", value = 2016) 
             ], width=2),
         dbc.Col([
@@ -47,7 +52,7 @@ layout = html.Div([
                                 html.P("Orders", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H5("501.36 K", className="card-title"),
+                                        html.H5("501.36 K", className="card-title", id = "sum-of-orders"),
                                         html.P("15.89 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
@@ -247,7 +252,7 @@ layout = html.Div([
                         dbc.Col([
                             dbc.Row([
                                 dbc.Col([
-                                    dcc.Dropdown( placeholder = 'Warehouse', id = 'table-category-filter', options = warehouse_filter,
+                                    dcc.Dropdown( placeholder = 'Warehouse', id = 'table-category-filter',
                                         className="dbc year-dropdown .Select-control") 
                                 ], width=8),
                                 dbc.Col([
@@ -269,45 +274,41 @@ layout = html.Div([
 
 ])
 
-# @callback(
-#     [Output("sales", "children"), Output("returns", "children"), Output("warehouse", "children"), Output("category", "children")], 
-#     Input("date-year-filter", "value")
-# )
-# def date_summary(year):
-#     # sum of sales and returns
-#     mask = sales.year == year
-#     mask2 = returns.year == year
-#     filtered_sales = sales.loc[mask,:]
-#     total_sales = filtered_sales["Order_Demand"].sum()
-#     total_sales = format(total_sales, ",")
-#     filtered_returns = returns.loc[mask2,:]
-#     total_returns = filtered_returns["Order_Demand"].sum()
-#     total_returns = format(total_returns, ",")
+# @callback(Output('sales-data', 'cdata'))
+# def store_sales_data():  # sourcery skip: inline-immediately-returned-variable
     
-#     #warehouse performance
-#     warehouse_data = filtered_sales.groupby("Warehouse")["Order_Demand"].sum().to_frame()
-#     best_warehouse = warehouse_data.idxmax(axis= 0)[0]
-    
-#     #product category performance
-    
-#     prod_cat = filtered_sales.groupby("Product_Category")["Order_Demand"].sum().to_frame()
-#     best_category =prod_cat.idxmax(axis= 0)[0]
-    
-#     return [total_sales], [total_returns], [best_warehouse], [best_category]
+#     return sales_data.reset_index().to_json(orient="split")
+
+@callback(
+    Output("date-time-filter", "options"),
+    Input("sales-store", "data")
+)
+def filter_options(sales_data):
+    # sourcery skip: inline-immediately-returned-variable
+    sales_data = pd.read_json(sales_data)
+    options = sales_data["year"]
+    options = options.unique()
+    return options
+
+@callback(
+    [Output("sum-of-orders", "children"), ], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.read_json(data)
+    total_orders = data["Order_Demand"].sum()
+    return [total_orders]
 
 @callback(
     Output("monthly-sales-chart", "figure"),
     Input("date-time-filter", "value"),
-    
+    Input("sales-store", "data")
 )
 
-def salesTrend(date):
-    # masks = (sales.year == date) & (sales.Product_Category == category)
-    # filtered_data = sales.loc[masks, :]
-    # filtered_data = filtered_data.fillna(0)
-    
-    # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
-    data = sales[sales["year"] == date]
+def salesTrend(date, data):
+    data = pd.read_json(data)
+    data = data[data["year"] == date]
     fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum', 
                        labels = {'Order_Demand':'Orders', "month_year": "Month-Year"})
     
