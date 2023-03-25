@@ -6,6 +6,7 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import sys
+import json
 import requests
 import io
 from flask_caching import Cache
@@ -283,9 +284,9 @@ layout = html.Div([
     Output("date-time-filter", "options"),
     Input("sales-store", "data")
 )
-def filter_options(sales_data):
+def filter_options(data):
     # sourcery skip: inline-immediately-returned-variable
-    sales_data = pd.read_json(sales_data)
+    sales_data = pd.DataFrame(json.loads(data))
     options = sales_data["year"]
     options = options.unique()
     return options
@@ -296,7 +297,7 @@ def filter_options(sales_data):
     Input("sales-store", "data")
 )
 def date_summary(year, data):
-    data = pd.read_json(data)
+    data = pd.DataFrame(json.loads(data))
     total_orders = data["Order_Demand"].sum()
     return [total_orders]
 
@@ -307,7 +308,7 @@ def date_summary(year, data):
 )
 
 def salesTrend(date, data):
-    data = pd.read_json(data)
+    data = pd.DataFrame(json.loads(data))
     data = data[data["year"] == date]
     fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum', 
                        labels = {'Order_Demand':'Orders', "month_year": "Month-Year"})

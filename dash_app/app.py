@@ -18,8 +18,7 @@ app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
                 dbc.themes.CYBORG, dbc.icons.BOOTSTRAP, dbc_css, dbc.icons.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 server = app.server
 
-sales_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/sales.csv?raw=true"
-returns_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/returns.csv?raw=true"
+sales_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/app_data.csv?raw=true"
 timeout = 20
 
 cache = Cache(server, config={
@@ -28,22 +27,14 @@ cache = Cache(server, config={
 })
 
 @cache.memoize(timeout= timeout)
-def sales_data():  # sourcery skip: inline-immediately-returned-variable
+def app_data():  # sourcery skip: inline-immediately-returned-variable
     sales=requests.get(sales_url).content
-    sales_data =pd.read_csv(io.StringIO(sales.decode('utf-8')))
-    df = sales_data.to_json(date_format='iso', orient='split')
-    return df
-
-@cache.memoize(timeout= timeout)
-def returns_data():  # sourcery skip: inline-immediately-returned-variable
-    returns=requests.get(returns_url).content
-    returns_data =pd.read_csv(io.StringIO(returns.decode('utf-8')))
-    df = returns_data.to_json(date_format='iso', orient='split')
+    sales_data =pd.read_csv(io.StringIO(sales.decode('utf-8')), error_bad_lines=False)
+    df = sales_data.to_json(date_format='iso')
     return df
 
 app.layout = html.Div([
-    dcc.Store(id ="sales-store", data = sales_data()),
-    dcc.Store(id = "returns-store", data = returns_data()),
+    dcc.Store(id ="sales-store", data = app_data()),
     dbc.Row([
             html.Nav([
                 html.Div([
@@ -72,19 +63,7 @@ app.layout = html.Div([
     ], className = "")
 ]
 )
-# @app.callback(
-#     Output("sales-store", "data")
-# )
-# def sales_data_store():  # sourcery skip: inline-immediately-returned-variable
-#     df = sales_data().to_json(date_format='iso', orient='split')
-#     return df
 
-# @app.callback(
-#     Output("returns-store", "data")
-# )
-# def returns_data_store():  # sourcery skip: inline-immediately-returned-variable
-#     df = returns_data().to_json(date_format='iso', orient='split')
-#     return df
 
 if __name__ == '__main__':
     app.run_server(debug=True, host='127.0.0.1', port=8080)
