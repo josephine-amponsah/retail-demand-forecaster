@@ -7,8 +7,9 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import sys
 import json
-import requests
-import io
+import numerize
+from numerize import numerize
+
 from flask_caching import Cache
 sys.path.insert(0, '../modules')
 
@@ -24,7 +25,7 @@ dash.register_page(__name__, path = "/")
 # category_filter = sales["Product_Category"].unique().tolist()
 # warehouse_filter = sales["Warehouse"].unique().tolist()
 summary_table = pd.DataFrame.from_dict({
-    "categories":[], "orders":[], "returns":[], "net_sales":[], "yoy_growth":[]
+    "categories":["X"], "orders":[10], "returns":[1], "net_sales":[9], "month_on_month":[2.5]
 })
 
 revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best Performing Category']
@@ -34,7 +35,7 @@ layout = html.Div([
     dbc.Row([
         dbc.Col([
             dcc.Dropdown( placeholder = 'Year', id = 'date-time-filter',
-                 className="dbc year-dropdown .Select-control", value = 2016) 
+                 className="dbc year-dropdown .Select-control", value = 2021) 
             ], width=2),
         dbc.Col([
             html.Button( 'Download Report', id = 'downloader',
@@ -53,7 +54,7 @@ layout = html.Div([
                                 html.P("Orders", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H5("501.36 K", className="card-title", id = "sum-of-orders"),
+                                        html.H5(className="card-title", id = "sum-of-orders"),
                                         html.P("15.89 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
@@ -71,7 +72,7 @@ layout = html.Div([
                                 html.P("Returns", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H5("15.732 K", className="card-title"),
+                                        html.H5( className="card-title", id = "sum-of-returns"),
                                         html.P("15.89 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
@@ -130,9 +131,9 @@ layout = html.Div([
                                     
                                     ]),
                                     dbc.Row([
-                                        dbc.Col(["Name"], id ="hightest-cat-name", className = "border-right", width =4),
-                                        dbc.Col(["Orders"], id ="highest-cat-orders", className = "border-right", width =4),
-                                        dbc.Col(["Revenue"], id ="highest-cat-revenue", width =4),
+                                        dbc.Col(["Name"], id ="highest-cat-name", className = "border-right", width =6),
+                                        dbc.Col(["Orders"], id ="highest-cat-orders",  width =6),
+                                        # dbc.Col(["Revenue"], id ="highest-cat-revenue", width =4),
                                     ]),
                                     # html.Div(["name"],),
                                     # html.Div(["orders"], id ="most-purchased-orders"),
@@ -150,9 +151,9 @@ layout = html.Div([
                                 
                                 ]),
                                 dbc.Row([
-                                    dbc.Col(["Name"], id ="most-purchased-name", className = "border-right", width =4),
-                                    dbc.Col(["Orders"], id ="most-purchased-orders", className = "border-right", width =4),
-                                    dbc.Col(["Revenue"], id ="most-purchased-revenue", width =4),
+                                    dbc.Col(["Name"], id ="most-purchased-name", className = "border-right", width =6),
+                                    dbc.Col(["Orders"], id ="most-purchased-orders", width =6),
+                                    # dbc.Col(["Revenue"], id ="most-purchased-revenue", width =4),
                                 ]),
                                 # html.Div(["name"],),
                                 # html.Div(["orders"], id ="most-purchased-orders"),
@@ -172,9 +173,9 @@ layout = html.Div([
                                     
                                     ]),
                                     dbc.Row([
-                                        dbc.Col(["Name"], id ="least-purchased-name", className = "border-right", width =4),
-                                        dbc.Col(["Orders"], id ="least-purchased-orders", className = "border-right", width =4),
-                                        dbc.Col(["Revenue"], id ="least-purchased-revenue", width =4),
+                                        dbc.Col(["Name"], id ="least-purchased-name", className = "border-right", width =6),
+                                        dbc.Col(["Orders"], id ="least-purchased-orders", width =6),
+                                        # dbc.Col(["Revenue"], id ="least-purchased-revenue", width =4),
                                     ]),
                                     # html.Div(["name"],),
                                     # html.Div(["orders"], id ="most-purchased-orders"),
@@ -192,9 +193,9 @@ layout = html.Div([
                                     
                                     ]),
                                     dbc.Row([
-                                        dbc.Col(["Name"], id ="most-returned-name", className = "border-right", width =4),
-                                        dbc.Col(["Orders"], id ="most-returned-orders", className = "border-right", width =4),
-                                        dbc.Col(["Revenue"], id ="most-returned-revenue", width =4),
+                                        dbc.Col(["Name"], id ="most-returned-name", className = "border-right", width =6),
+                                        dbc.Col(["Orders"], id ="most-returned-orders", width =6),
+                                        # dbc.Col(["Revenue"], id ="most-returned-revenue", width =4),
                                     ]),
                                     # html.Div(["name"],),
                                     # html.Div(["orders"], id ="most-purchased-orders"),
@@ -224,7 +225,7 @@ layout = html.Div([
             html.Div(
                 [
                     html.Div([
-                        html.H6("Top 10 Warehouses", className="card-title"),
+                        html.H6("Top 10 Categories", className="card-title"),
                         html.Br(),
                         dbc.Row([
                                 dbc.Col([
@@ -253,7 +254,7 @@ layout = html.Div([
                         dbc.Col([
                             dbc.Row([
                                 dbc.Col([
-                                    dcc.Dropdown( placeholder = 'Warehouse', id = 'table-category-filter',
+                                    dcc.Dropdown( placeholder = 'Warehouse', id = 'table-warehouse-filter',
                                         className="dbc year-dropdown .Select-control") 
                                 ], width=8),
                                 dbc.Col([
@@ -266,7 +267,7 @@ layout = html.Div([
                         
                     ], justify= "between", className="details-table-nav"),
                     
-                    dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True)
+                    dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True, id= "data-table")
                 ], className= "card bg-light mb-3 details-table-section second-section"
             ), width=8
         , ),
@@ -279,7 +280,7 @@ layout = html.Div([
 # def store_sales_data():  # sourcery skip: inline-immediately-returned-variable
     
 #     return sales_data.reset_index().to_json(orient="split")
-
+#year dropdown options
 @callback(
     Output("date-time-filter", "options"),
     Input("sales-store", "data")
@@ -292,14 +293,97 @@ def filter_options(data):
     return options
 
 @callback(
+    Output("date-time-filter", "options"),
+    Input("sales-store", "data")
+)
+def filter_options(data):
+    # sourcery skip: inline-immediately-returned-variable
+    sales_data = pd.DataFrame(json.loads(data))
+    options = sales_data["year"]
+    options = options.unique()
+    return options
+
+
+@callback(
     [Output("sum-of-orders", "children"), ], 
     Input("date-time-filter", "value"),
     Input("sales-store", "data")
 )
 def date_summary(year, data):
     data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
     total_orders = data["Order_Demand"].sum()
+    total_orders = numerize.numerize(total_orders)
     return [total_orders]
+
+
+@callback(
+    [Output("highest-cat-name", "children"), Output("highest-cat-orders", "children")], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
+    high_cat = data[["Product_Category", "Order_Demand"]]
+    high_cat = high_cat.groupby(["Product_Category"]).sum("Order_Demand")
+    high_cat_name= high_cat.idxmax()
+    high_cat_orders = numerize.numerize(high_cat["Order_Demand"].max())
+    return [high_cat_name, high_cat_orders]
+
+@callback(
+    [Output("most-purchased-name", "children"), Output("most-purchased-orders", "children")], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
+    most_purchased = data[["Product_Code", "Order_Demand"]]
+    most_purchased = most_purchased.groupby(["Product_Code"]).sum("Order_Demand")
+    most_purchased_name= most_purchased.idxmax()
+    most_purchased_orders = numerize.numerize(most_purchased["Order_Demand"].max())
+    return [most_purchased_name, most_purchased_orders]
+
+@callback(
+    [Output("least-purchased-name", "children"), Output("least-purchased-orders", "children")], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
+    least_purchased = data[["Product_Code", "Order_Demand"]]
+    least_purchased = least_purchased.groupby(["Product_Code"]).sum("Order_Demand")
+    least_purchased_name= least_purchased.idxmin()
+    least_purchased_orders = numerize.numerize(least_purchased["Order_Demand"].min())
+    return [least_purchased_name, least_purchased_orders]
+
+@callback(
+    [Output("most-returned-name", "children"), Output("most-returned-orders", "children")], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
+    most_returned = data[["Product_Code", "Returns"]]
+    most_returned = most_returned.groupby(["Product_Code"]).sum("Returns")
+    most_returned_name= most_returned.idxmax()
+    most_returned_orders = numerize.numerize(most_returned["Returns"].max())
+    return [most_returned_name, most_returned_orders]
+
+@callback(
+    [Output("sum-of-returns", "children"), ], 
+    Input("date-time-filter", "value"),
+    Input("sales-store", "data")
+)
+def date_summary(year, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == year]
+    total_returns = data["Returns"].sum()
+    total_returns = numerize.numerize(total_returns)
+    return [total_returns]
 
 @callback(
     Output("monthly-sales-chart", "figure"),
@@ -308,10 +392,12 @@ def date_summary(year, data):
 )
 
 def salesTrend(date, data):
-    data = pd.DataFrame(json.loads(data))
-    data = data[data["year"] == date]
-    fig = px.histogram(data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum', 
-                       labels = {'Order_Demand':'Orders', "month_year": "Month-Year"})
+    plot_data = pd.DataFrame(json.loads(data))
+    plot_data = plot_data[plot_data["year"] == date]
+    plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
+    plot_data = pd.DataFrame(plot_data).reset_index()
+    fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
+                       labels = {'Order_Demand':'Orders', "month": "Month"})
     
     fig.update_layout(
         paper_bgcolor = '#222',
@@ -339,14 +425,19 @@ def salesTrend(date, data):
 @callback(
     Output("gauge-chart", "figure"),
     Input("date-time-filter", "value"),
-    
+    Input("sales-store", "data")
 )
-def gauge(value):
-    labels = ['Oxygen','Hydrogen']
-    values = [4500, 2500]
+def gauge(value, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == value]
+    gauge_data = data[["Warehouse", "Order_Demand"]]
+    gauge_data = gauge_data.groupby(["Warehouse"]).sum("Order_Demand").reset_index()
+    
+    # labels = ["NET-DEMAND", "RETURNS"]
+    # values = [4500, 2500]
 
 # Use `hole` to create a donut-like pie chart
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.7)])
+    fig = go.Figure(data=[go.Pie(labels= gauge_data["Warehouse"].apply(str.upper), values= gauge_data["Order_Demand"] , hole=.7)])
     
     fig.update_traces(
         marker_colors= ["#93c", "#f80"]
@@ -358,34 +449,18 @@ def gauge(value):
     )
     return fig
     
-# @callback(
-#     [Output("main-returned", "children"), Output("main-purchased", "children"), Output("main-lowest", "children"), 
-#      Output("details-returned", "children"), Output("details-purchased", "children"), Output("details-lowest", "children")],
-#     Input("date-year-filter", "value")
-# )
-
-# def highlights(year):
-    # mask1 = sales.year == year
-    # mask2 = returns.year == year
-    # filtered_sales = sales.loc[mask1,:]
-    # filtered_returns = returns.loc[mask2,:]
-    
-    # # most returned product
-    # most_returned = filtered_returns.groupby("Product_Code")["Order_Demand"].sum().to_frame()
-    # returned = most_returned.idxmax(axis = 0)[0]
-    # details_most_returned =format(most_returned["Order_Demand"].max(), ",")
-    
-    # # most purchased products
-    
-    # most_purchased = filtered_sales.groupby("Product_Code")["Order_Demand"].sum().to_frame()
-    # purchased = most_purchased.idxmax(axis = 0)[0]
-    # details_most_purchased = format(most_purchased["Order_Demand"].max(), ",")
-    
-    
-    # # lowest performing products
-    # lowest_performing = filtered_sales.groupby("Product_Code")["Order_Demand"].sum().to_frame()
-    # performing = lowest_performing.idxmin(axis = 0)[0]
-    # details_lowest_performing = format(lowest_performing["Order_Demand"].min(), ",")
-    
-    
-    # return [returned], [purchased], [performing], [details_most_returned], [details_most_purchased], [details_lowest_performing]
+@callback(
+    Output("data-table", "data"),
+    Input("date-time-filter", "value"),
+    Input('table-warehouse-filter', "value2"),
+    Input("sales-store", "data")
+)
+def data_table(value,value2, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[data["year"] == value & data["Warehouse"] == value2]
+    table = data[["Product_Category", "Order_Demand", "Returns"]]
+    table = table.groupby("Product_Category")["Order_Demand", "Returns"].sum().reset_index()
+    table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
+    table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
+    table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
+    return table

@@ -18,7 +18,7 @@ app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
                 dbc.themes.CYBORG, dbc.icons.BOOTSTRAP, dbc_css, dbc.icons.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 server = app.server
 
-sales_url="https://github.com/ladyjossy77/retail-optimization/blob/master/data/app_data.csv?raw=true"
+sales_url="https://raw.githubusercontent.com/ladyjossy77/retail-demand-forecaster/master/data/app_data.csv"
 timeout = 20
 
 cache = Cache(server, config={
@@ -28,8 +28,7 @@ cache = Cache(server, config={
 
 @cache.memoize(timeout= timeout)
 def app_data():  # sourcery skip: inline-immediately-returned-variable
-    sales=requests.get(sales_url).content
-    sales_data =pd.read_csv(io.StringIO(sales.decode('utf-8')), error_bad_lines=False)
+    sales_data =pd.read_csv( sales_url, error_bad_lines=False, index_col= 0)
     df = sales_data.to_json(date_format='iso')
     return df
 
