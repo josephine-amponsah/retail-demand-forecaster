@@ -267,7 +267,7 @@ layout = html.Div([
                         
                     ], justify= "between", className="details-table-nav"),
                     
-                    dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True, id= "data-table")
+                    dbc.Table(id = 'data-table')
                 ], className= "card bg-light mb-3 details-table-section second-section"
             ), width=8
         , ),
@@ -293,13 +293,13 @@ def filter_options(data):
     return options
 
 @callback(
-    Output("date-time-filter", "options"),
+    Output("table-warehouse-filter", "options"),
     Input("sales-store", "data")
 )
-def filter_options(data):
+def warehouse_options(data):
     # sourcery skip: inline-immediately-returned-variable
     sales_data = pd.DataFrame(json.loads(data))
-    options = sales_data["year"]
+    options = sales_data["Warehouse"]
     options = options.unique()
     return options
 
@@ -309,7 +309,7 @@ def filter_options(data):
     Input("date-time-filter", "value"),
     Input("sales-store", "data")
 )
-def date_summary(year, data):
+def orders_summary(year, data):
     data = pd.DataFrame(json.loads(data))
     data = data[data["year"] == year]
     total_orders = data["Order_Demand"].sum()
@@ -390,7 +390,6 @@ def date_summary(year, data):
     Input("date-time-filter", "value"),
     Input("sales-store", "data")
 )
-
 def salesTrend(date, data):
     plot_data = pd.DataFrame(json.loads(data))
     plot_data = plot_data[plot_data["year"] == date]
@@ -436,7 +435,7 @@ def gauge(value, data):
     # labels = ["NET-DEMAND", "RETURNS"]
     # values = [4500, 2500]
 
-# Use `hole` to create a donut-like pie chart
+    # Use `hole` to create a donut-like pie chart
     fig = go.Figure(data=[go.Pie(labels= gauge_data["Warehouse"].apply(str.upper), values= gauge_data["Order_Demand"] , hole=.7)])
     
     fig.update_traces(
@@ -450,17 +449,22 @@ def gauge(value, data):
     return fig
     
 @callback(
-    Output("data-table", "data"),
+    Output("data-table", "children"),
     Input("date-time-filter", "value"),
-    Input('table-warehouse-filter', "value2"),
+    Input('table-warehouse-filter', "value"),
     Input("sales-store", "data")
 )
-def data_table(value,value2, data):
+def data_table(date,whse, data):
     data = pd.DataFrame(json.loads(data))
-    data = data[data["year"] == value & data["Warehouse"] == value2]
+    data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
     table = data[["Product_Category", "Order_Demand", "Returns"]]
-    table = table.groupby("Product_Category")["Order_Demand", "Returns"].sum().reset_index()
-    table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
-    table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
-    table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
-    return table
+    table = table.groupby(["Product_Category"], as_index = False).agg(
+        Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
+        Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
+    )
+    # table = table.reset_index()
+    # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
+    # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
+    # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
+    df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
+    return df

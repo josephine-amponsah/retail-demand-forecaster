@@ -28,7 +28,7 @@ cache = Cache(server, config={
 
 @cache.memoize(timeout= timeout)
 def app_data():  # sourcery skip: inline-immediately-returned-variable
-    sales_data =pd.read_csv( sales_url, error_bad_lines=False, index_col= 0)
+    sales_data =pd.read_csv( sales_url, on_bad_lines='error', index_col= 0)
     df = sales_data.to_json(date_format='iso')
     return df
 
