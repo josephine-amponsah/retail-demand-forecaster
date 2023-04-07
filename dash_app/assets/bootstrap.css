@@ -11103,8 +11103,9 @@ legend {
   /* background-color: var(--bs-btn-bg); */
 }
 .dbc .DateRangePickerInput {
-  background-color: var(--bs-body-bg);
-  height: 24px;
+  /* background-color: var(--bs-body-bg); */
+  background-color : transparent;
+  height: 30px;
   margin:0px;
   padding: 0px;
   border-radius: 5px;
@@ -11112,12 +11113,12 @@ legend {
 .dbc .DateInput_input {
   /* background-color: var(--bs-body-bg); */
   font-family: var(--bs-body-font-family);
-  height: 20px;
+  height: 30px;
   font-size: 15px;
   /* margin: 0px; */
   /* padding-top: 2px;
   padding-bottom: 2px; */
-  border-color: var(--bs-body-bg) ;
+  /* border-color: var(--bs-body-bg) ; */
   /* border-start-start-radius: 5px;
   border-start-end-radius: 5px; */
 }
@@ -11156,4 +11157,40 @@ legend {
 
 .table-box{
   overflow: auto;
+}
+/* Set the font family and size */
+.daterangepicker input {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* Set the border and background color */
+.daterangepicker input[type="text"] {
+  border: 1px solid #495057;
+  background-color: #373940;
+  color: #fff;
+}
+
+/* Set the hover background color */
+.daterangepicker input[type="text"]:hover {
+  background-color: #3b3e45;
+}
+
+.date-picker-box{
+  border: solid 2px;
+  border-color: #93c;
+  background-color: var(--bs-body-color-rgb);
+  /* border: var(--bs-btn-border-width) solid var(--bs-btn-border-color); */
+  border-radius: 0.375rem;
+  width: 100%;
+  /* background-color: var(--bs-btn-bg); */
+}
+
+.date-picker-box .Input-styling{
+  background-color : transparent;
+  height: 30px;
+  width: 100%;
+  margin:0px;
+  padding: 0px;
+  border-radius: 5px;
 }

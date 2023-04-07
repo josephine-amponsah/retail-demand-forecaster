@@ -4,13 +4,14 @@ import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dash_table
+import json
 
 # app = Dash(__name__)
 dash.register_page(__name__, path = '/projections')
 #app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 sales = pd.read_csv("../data/sales.csv")
 returns = pd.read_csv("../data/returns.csv")
-
+targets = ["Orders", "Returns", "Revenue"]
 
 year_filter =  sales["year"].unique().tolist()
 year_options = year_filter.sort() 
@@ -22,6 +23,7 @@ summary_table = pd.DataFrame.from_dict({
 revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best Performing Category']
 
 layout = html.Div([
+    dcc.Store(id = "sales-data"),
     dbc.Row([
         dbc.Col(
             html.Div(
@@ -29,16 +31,30 @@ layout = html.Div([
                     html.Div([
                         html.H6("Forecaster", className="card-title"),
                         dbc.Row([
-                            html.Div("Date Range"),
-                            dbc.Col([dbc.Input(className="year-dropdown")], width = 4)
+                            
+                            # dbc.Col([dbc.Input(className="year-dropdown")], width = 4)
                         ]),
-                        
+                        html.Div([
+                                dcc.DatePickerRange(
+                                    # style={"width": "100%"},
+                                    start_date = "2022-01",
+                                    display_format = "MMM YYYY",
+                                    start_date_placeholder_text="Start Date",
+                                    end_date_placeholder_text="End Date",
+                                    calendar_orientation = 'vertical',
+                                    className = "dbc ",
+                                
+                                )
+                            ],id = "date-picker", className = "dbc date-picker-box Input-styling"),
+                        html.Br(),
                         html.Div("Warehouses"),
-                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
-                        html.P("Categories"),
-                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
-                        html.P("forecast target(demand/returns/revenue)"),
-                        dcc.Dropdown(className="year-dropdown dbc Select-control"),
+                        dcc.Dropdown( placeholder = 'Warehouse', id = 'whse-selection', className="dbc year-dropdown .Select-control") ,
+                        html.Br(),
+                        html.Div("Categories"),
+                        dcc.Dropdown( placeholder = 'Year', id = 'cat-selection', className="dbc year-dropdown .Select-control"),
+                        html.Br(),
+                        html.Div("Target"),
+                        dcc.Dropdown(placeholder = "Target", options = targets, className="year-dropdown dbc .Select-control"),
                         html.Button(className="btn btn-info")
                     ], className="card-body")
                 ], className= "card border-light mb-3"
@@ -90,6 +106,36 @@ layout = html.Div([
 ])
 
 
+@callback(
+    Output("whse-selection", "options"),
+    Input("sales-store", "data")
+)
+def filter_options(data):
+    # sourcery skip: inline-immediately-returned-variable
+    sales_data = pd.DataFrame(json.loads(data))
+    options = sales_data["Warehouse"]
+    options = options.unique()
+    return options
+
+@callback(
+    Output("cat-selection", "options"),
+    Input("sales-store", "data")
+)
+def filter_options(data):
+    # sourcery skip: inline-immediately-returned-variable
+    sales_data = pd.DataFrame(json.loads(data))
+    options = sales_data["Product_Category"]
+    options = options.unique()
+    return options
+
+
+# @callback(
+#     Output("date-picker", "children"),
+#     Input("sales-store", "data")
+# )
+# def date_picker(data):
+#     date = 
+#     return date
 # @callback(
 #     Output("projected-demand-chart", "figure"),
 #     Input("date-time-filter", "value"),
