@@ -267,7 +267,7 @@ layout = html.Div([
                         
                     ], justify= "between", className="details-table-nav"),
                     
-                    dbc.Table(id = 'data-table')
+                    html.Div(dbc.Table(id = 'data-table'), className = "table-box")
                 ], className= "card bg-light mb-3 details-table-section second-section"
             ), width=8
         , ),

@@ -11153,3 +11153,7 @@ legend {
   color: var(--bs-body-color) !important;
   border-color: rgba(100, 100, 100, 0.4) !important;
 }
+
+.table-box{
+  overflow: auto;
+}
