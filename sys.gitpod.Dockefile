@@ -1,0 +1,3 @@
+FROM gitpod/workspace-full:latest
+
+RUN pip install --user ipykernel
