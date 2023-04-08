@@ -1,10 +1,11 @@
 import dash
-from dash import Dash, html, dcc, Input, Output, callback
+from dash import Dash, html, dcc, Input, Output, callback, State
 import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dash_table
 import json
+import forecastingPipeline as forecaster
 
 # app = Dash(__name__)
 dash.register_page(__name__, path = '/projections')
@@ -57,7 +58,7 @@ layout = html.Div([
                         dcc.Dropdown( placeholder = 'Year', id = 'cat-selection', className="dbc year-dropdown .Select-control"),
                         html.Br(),
                         html.Div("Target"),
-                        dcc.Dropdown(placeholder = "Target", options = targets, className="year-dropdown dbc .Select-control"),
+                        dcc.Dropdown(placeholder = "Target", options = targets, className="year-dropdown dbc .Select-control", id = "targets"),
                         html.Br(),
                         html.Div([
                             dbc.Row([
@@ -92,7 +93,7 @@ layout = html.Div([
                         html.H6("Warehouses", className="card-title"),
                         
                     ], className="card-body")
-                ], className= "card bg-light mb-3"
+                ], className= "card bg-light mb-3", id="whse-projection"
             ), width=4
         ),
         dbc.Col(
@@ -107,7 +108,7 @@ layout = html.Div([
                                 ], width = 2),
                         ], justify= 'end', className = "details-table-nav"),
                         
-                        dbc.Table.from_dataframe(summary_table, striped=True, bordered=True, hover=True, index=True)
+                        dbc.Table(id = "predicted-table")
                     ], className="card-body")
                 ], className= "card bg-light mb-3"
             ), width=8
@@ -149,7 +150,7 @@ def filter_options(data):
     State("cat-selection", "value"),
     State("targets", "value"),
     Input("sales-store", "data"),
-    Input("model-run", "click")
+    Input("model-run", "n_clicks")
 )
 def date_picker(start, end, whse, cat, target, data, click):
     if click ==1:
@@ -162,7 +163,7 @@ def date_picker(start, end, whse, cat, target, data, click):
 @callback(
     Output("projected-demand-chart", "figure"),
     # Input("date-time-filter", "value"),
-    Input("projection-store", "data")
+    Input("projected-data", "data")
 )
 def salesTrend(date, data):
     plot_data = pd.DataFrame(json.loads(data))
@@ -194,3 +195,32 @@ def salesTrend(date, data):
     )
     
     return fig
+@callback(
+    Output("predicted-table", "children"),
+    Input("projected-data", "data")
+)
+def data_table(date,whse, data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
+    table = data[["Product_Category", "Order_Demand", "Returns"]]
+    table = table.groupby(["Product_Category"], as_index = False).agg(
+        Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
+        Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
+    )
+    # table = table.reset_index()
+    # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
+    # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
+    # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
+    df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
+    return df
+
+@callback(
+    Output("whse-projection", "children"),
+    State("targets", "value"),
+    Input("projected-data", "data")
+)
+def whse_projections(data, value):
+    data = pd.DataFrame(json.loads(data))
+    df = data[["Warehouse", value]]
+    df = data.groupby(["Warehouse"], as_index= false)["Order_Demand"].sum()
+    return df

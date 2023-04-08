@@ -15,11 +15,11 @@ pipe = ForecastingPipeline(steps =[
     ("naive", NaiveForecaster())] )
 ])
 def transform(df, columns, values):
-    
-    return
+    df = df.groupby(columns)[values].sum()
+    return df
 
 def forecast(fh, df, start):
-    model = pipe.fit(df, fh)
+    df = transform(df, columns, values)
     pred = model.predict()
     final = pred[[start]]
     return final
