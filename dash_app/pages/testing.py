@@ -5,20 +5,20 @@ import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dash_table
-df = pd.read_csv('https://git.io/Juf1t')
+# df = pd.read_csv('https://git.io/Juf1t')
 
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 dash.register_page(__name__, path = '/testing')
 
 layout = dbc.Container([
-    dbc.Label('Click a cell in the table:'),
-    dash_table.DataTable(df.to_dict('records'),[{"name": i, "id": i} for i in df.columns], id='tbl'),
-    dbc.Alert(id='tbl_out'),
+    html.Div('Test'),
+    # dash_table.DataTable(df.to_dict('records'),[{"name": i, "id": i} for i in df.columns], id='tbl'),
+    # dbc.Alert(id='tbl_out'),
 ])
 
-@callback(Output('tbl_out', 'children'), Input('tbl', 'active_cell'))
-def update_graphs(active_cell):
-    return str(active_cell) if active_cell else "Click the table"
+# @callback(Output('tbl_out', 'children'), Input('tbl', 'active_cell'))
+# def update_graphs(active_cell):
+#     return str(active_cell) if active_cell else "Click the table"
 
 # df = px.data.tips()
 

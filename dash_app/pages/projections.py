@@ -10,13 +10,13 @@ from modules import forecastingPipeline as forecaster
 # app = Dash(__name__)
 dash.register_page(__name__, path = '/projections')
 #app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
-sales = pd.read_csv("../data/sales.csv")
-returns = pd.read_csv("../data/returns.csv")
+# sales = pd.read_csv("../data/sales.csv")
+# returns = pd.read_csv("../data/returns.csv")
 targets = ["Orders", "Returns", "Revenue"]
 
-year_filter =  sales["year"].unique().tolist()
-year_options = year_filter.sort() 
-category_filter = sales["Product_Category"].unique().tolist()
+# year_filter =  sales["year"].unique().tolist()
+# year_options = year_filter.sort() 
+# category_filter = sales["Product_Category"].unique().tolist()
 summary_table = pd.DataFrame.from_dict({
     "warehouse":[], "orders":[], "returns":[], "net_sales":[], "yoy_growth":[]
 })
