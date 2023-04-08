@@ -22,8 +22,10 @@ summary_table = pd.DataFrame.from_dict({
 
 revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best Performing Category']
 
+
 layout = html.Div([
     dcc.Store(id = "sales-data"),
+    dcc.Store(id = "projected-data"),
     dbc.Row([
         dbc.Col(
             html.Div(
@@ -37,15 +39,16 @@ layout = html.Div([
                         html.Div([
                                 dcc.DatePickerRange(
                                     # style={"width": "100%"},
-                                    start_date = "2022-01",
+                                    # start_date = "2022-01",
+                                    min_date_allowed = "2022-01-02",
                                     display_format = "MMM YYYY",
                                     start_date_placeholder_text="Start Date",
                                     end_date_placeholder_text="End Date",
                                     calendar_orientation = 'vertical',
                                     className = "dbc ",
-                                
+                                    id = "date-picker",
                                 )
-                            ],id = "date-picker", className = "dbc date-picker-box Input-styling"),
+                            ], className = "dbc date-picker-box Input-styling"),
                         html.Br(),
                         html.Div("Warehouses"),
                         dcc.Dropdown( placeholder = 'Warehouse', id = 'whse-selection', className="dbc year-dropdown .Select-control") ,
@@ -55,7 +58,16 @@ layout = html.Div([
                         html.Br(),
                         html.Div("Target"),
                         dcc.Dropdown(placeholder = "Target", options = targets, className="year-dropdown dbc .Select-control"),
-                        html.Button(className="btn btn-info")
+                        html.Br(),
+                        html.Div([
+                            dbc.Row([
+                                dbc.Col([
+                                html.Button( 'Run', id = 'model-run',
+                                    className="btn btn-info") 
+                                ], width = 4),
+                            ], justify = 'center')
+                        ])
+                        
                     ], className="card-body")
                 ], className= "card border-light mb-3"
             ), width=4
@@ -65,7 +77,7 @@ layout = html.Div([
                 [
                     html.Div([
                         html.H6("Projected Demand", className="card-title"),
-                        # dcc.Graph( id = "projected-demand-chart")
+                        dcc.Graph( id = "projected-demand-chart")
                     ], className="card-body")
                 ], className= "card bg-light mb-3"
             ), width=8
@@ -129,42 +141,56 @@ def filter_options(data):
     return options
 
 
-# @callback(
-#     Output("date-picker", "children"),
-#     Input("sales-store", "data")
-# )
-# def date_picker(data):
-#     date = 
-#     return date
-# @callback(
-#     Output("projected-demand-chart", "figure"),
-#     Input("date-time-filter", "value"),
-    
-# )
-
-# def salesTrend(date):
-#     # masks = (sales.year == date) & (sales.Product_Category == category)
-#     # filtered_data = sales.loc[masks, :]
-#     # filtered_data = filtered_data.fillna(0)
-    
-#     # fig_data = filtered_data.groupby("month_year")["Order_Demand"].sum().to_frame().reset_index()
-#     data = sales[sales["year"] == date]
-#     fig = px.line(data, y="Order_Demand", x="month_year", template="cyborg")
-    
-#     fig.update_layout(
-#         paper_bgcolor = '#222',
-#         margin={'l':20, 'r':20, 'b':0},
-#         font_color='white',
-#         font_size=18,
-#         hoverlabel={'bgcolor':'white', 'font_size':16, },
-#         bargap=.25
+@callback(
+    Output("projected-data", "data"),
+    State("date-picker", "start_date"),
+    State("date-picker", "end_date"),
+    State("whse-selection", "value"),
+    State("cat-selection", "value"),
+    State("targets", "value"),
+    Input("sales-store", "data"),
+    Input("model-run", "click")
+)
+def date_picker(start, end, whse, cat, target, data, click):
+    if click ==1:
+        data = pd.DataFrame(json.loads(data))
         
-#     )
-#     fig.update_traces(
-#         # marker_bgcolor="#93c"
-#         marker = {
-#             'color': '#93c',
-#         }
-#         )
     
-#     return fig
+    return data
+
+
+@callback(
+    Output("projected-demand-chart", "figure"),
+    # Input("date-time-filter", "value"),
+    Input("projection-store", "data")
+)
+def salesTrend(date, data):
+    plot_data = pd.DataFrame(json.loads(data))
+    plot_data = plot_data[plot_data["year"] == date]
+    plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
+    plot_data = pd.DataFrame(plot_data).reset_index()
+    fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
+                       labels = {'Order_Demand':'Orders', "month": "Month"})
+    
+    fig.update_layout(
+        paper_bgcolor = '#222',
+        margin={'l':20, 'r':20, 'b':0},
+        font_color='white',
+        # font_size=18,
+       
+        hoverlabel={'bgcolor':'black', 'font_size':12, },
+        bargap=.40
+        
+    )
+    fig.update_traces(
+        # marker_bgcolor="#93c"
+        marker = {
+            'color': '#93c',
+        }
+        )
+    fig.update_xaxes( # the y-axis is in dollars
+        dtick= 30, 
+        showgrid=True
+    )
+    
+    return fig

@@ -14,9 +14,13 @@ pipe = ForecastingPipeline(steps =[
     ("theta", ThetaForecaster()),
     ("naive", NaiveForecaster())] )
 ])
+def transform(df, columns, values):
+    
+    return
+
 def forecast(fh, df, start):
     model = pipe.fit(df, fh)
     pred = model.predict()
-    final = pred[[:start]]
+    final = pred[[start]]
     return final
 
