@@ -5,7 +5,7 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dash_table
 import json
-import forecastingPipeline as forecaster
+from modules import forecastingPipeline as forecaster
 
 # app = Dash(__name__)
 dash.register_page(__name__, path = '/projections')
