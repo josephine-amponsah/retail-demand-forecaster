@@ -160,67 +160,67 @@ def date_picker(start, end, whse, cat, target, data, click):
     return data
 
 
-@callback(
-    Output("projected-demand-chart", "figure"),
-    # Input("date-time-filter", "value"),
-    Input("projected-data", "data")
-)
-def salesTrend(date, data):
-    plot_data = pd.DataFrame(json.loads(data))
-    plot_data = plot_data[plot_data["year"] == date]
-    plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
-    plot_data = pd.DataFrame(plot_data).reset_index()
-    fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
-                       labels = {'Order_Demand':'Orders', "month": "Month"})
+# @callback(
+#     Output("projected-demand-chart", "figure"),
+#     # Input("date-time-filter", "value"),
+#     Input("projected-data", "data")
+# )
+# def salesTrend(date, data):
+#     plot_data = pd.DataFrame(json.loads(data))
+#     plot_data = plot_data[plot_data["year"] == date]
+#     plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
+#     plot_data = pd.DataFrame(plot_data).reset_index()
+#     fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
+#                        labels = {'Order_Demand':'Orders', "month": "Month"})
     
-    fig.update_layout(
-        paper_bgcolor = '#222',
-        margin={'l':20, 'r':20, 'b':0},
-        font_color='white',
-        # font_size=18,
+#     fig.update_layout(
+#         paper_bgcolor = '#222',
+#         margin={'l':20, 'r':20, 'b':0},
+#         font_color='white',
+#         # font_size=18,
        
-        hoverlabel={'bgcolor':'black', 'font_size':12, },
-        bargap=.40
+#         hoverlabel={'bgcolor':'black', 'font_size':12, },
+#         bargap=.40
         
-    )
-    fig.update_traces(
-        # marker_bgcolor="#93c"
-        marker = {
-            'color': '#93c',
-        }
-        )
-    fig.update_xaxes( # the y-axis is in dollars
-        dtick= 30, 
-        showgrid=True
-    )
+#     )
+#     fig.update_traces(
+#         # marker_bgcolor="#93c"
+#         marker = {
+#             'color': '#93c',
+#         }
+#         )
+#     fig.update_xaxes( # the y-axis is in dollars
+#         dtick= 30, 
+#         showgrid=True
+#     )
     
-    return fig
-@callback(
-    Output("predicted-table", "children"),
-    Input("projected-data", "data")
-)
-def data_table(date,whse, data):
-    data = pd.DataFrame(json.loads(data))
-    data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
-    table = data[["Product_Category", "Order_Demand", "Returns"]]
-    table = table.groupby(["Product_Category"], as_index = False).agg(
-        Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
-        Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
-    )
-    # table = table.reset_index()
-    # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
-    # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
-    # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
-    df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
-    return df
+#     return fig
+# @callback(
+#     Output("predicted-table", "children"),
+#     Input("projected-data", "data")
+# )
+# def data_table(date,whse, data):
+#     data = pd.DataFrame(json.loads(data))
+#     data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
+#     table = data[["Product_Category", "Order_Demand", "Returns"]]
+#     table = table.groupby(["Product_Category"], as_index = False).agg(
+#         Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
+#         Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
+#     )
+#     # table = table.reset_index()
+#     # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
+#     # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
+#     # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
+#     df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
+#     return df
 
-@callback(
-    Output("whse-projection", "children"),
-    State("targets", "value"),
-    Input("projected-data", "data")
-)
-def whse_projections(data, value):
-    data = pd.DataFrame(json.loads(data))
-    df = data[["Warehouse", value]]
-    df = data.groupby(["Warehouse"], as_index= false)["Order_Demand"].sum()
-    return df
+# @callback(
+#     Output("whse-projection", "children"),
+#     State("targets", "value"),
+#     Input("projected-data", "data")
+# )
+# def whse_projections(data, value):
+#     data = pd.DataFrame(json.loads(data))
+#     df = data[["Warehouse", value]]
+#     df = data.groupby(["Warehouse"], as_index= false)["Order_Demand"].sum()
+#     return df
