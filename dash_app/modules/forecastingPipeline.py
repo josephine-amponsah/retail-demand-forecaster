@@ -9,8 +9,12 @@
 import pandas as pd
 import sklearn 
 import joblib
+import pickle
 
-model = joblib.load('forecast.pkl')
+with open("modules/forecaster.pkl", 'rb') as f:
+    model = joblib.load(f)
+
+# model = joblib.load('')
 
 # def transform(df, columns, values):
 #     df = df.groupby(columns)[values].sum()

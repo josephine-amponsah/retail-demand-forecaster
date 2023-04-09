@@ -7,16 +7,11 @@ from dash import dash_table
 import json
 from modules import forecastingPipeline as forecaster
 
-# app = Dash(__name__)
 dash.register_page(__name__, path = '/projections')
-#app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
-# sales = pd.read_csv("../data/sales.csv")
-# returns = pd.read_csv("../data/returns.csv")
+
 targets = ["Orders", "Returns", "Revenue"]
 
-# year_filter =  sales["year"].unique().tolist()
-# year_options = year_filter.sort() 
-# category_filter = sales["Product_Category"].unique().tolist()
+
 summary_table = pd.DataFrame.from_dict({
     "warehouse":[], "orders":[], "returns":[], "net_sales":[], "yoy_growth":[]
 })
@@ -35,12 +30,11 @@ layout = html.Div([
                         html.H6("Forecaster", className="card-title"),
                         dbc.Row([
                             
-                            # dbc.Col([dbc.Input(className="year-dropdown")], width = 4)
                         ]),
                         html.Div([
                                 dcc.DatePickerRange(
                                     # style={"width": "100%"},
-                                    # start_date = "2022-01",
+                                    start_date = "2022-01",
                                     min_date_allowed = "2022-01-02",
                                     display_format = "MMM YYYY",
                                     start_date_placeholder_text="Start Date",
