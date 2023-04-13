@@ -72,8 +72,8 @@ layout = html.Div([
                                 html.P("Returns", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H5( className="card-title", id = "sum-of-returns"),
-                                        html.P("15.89 %", className="card-text")
+                                        html.H3( className="card-title", id = "sum-of-returns"),
+                                        # html.P("15.89 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
                                         html.I(className = "bi bi-arrow-left-square fa-3x icon-negative")
@@ -225,17 +225,9 @@ layout = html.Div([
                     html.Div([
                         html.H6("Top 10 Categories", className="card-title"),
                         html.Br(),
-                        dbc.Row([
-                                dbc.Col([
-                                    html.I(className="bi bi-arrow-up-right-square-fill icon-main opacity")
-                                ], width = 2),
-                                
-                                dbc.Col(["Name"]),
-                                dbc.Col(["Orders"], id ="warehouse-orders", className = ""),
-                                dbc.Col(["Revenue"], id ="warehouse-revenue"),
-                                
-                        ]),
-                    ], className="card-body")
+                        html.Div([  
+                        ], id = 'category-rating', className = "cat-card-rows"),
+                    ], className="card-body", style = {"overflow": "scroll"})
                 ], className= "card bg-light mb-3 second-section"
             ), width=4
         ),
@@ -455,7 +447,29 @@ def gauge(data):
         height = 200
     )
     return fig
-    
+
+@callback(
+    Output("category-rating", "children"),
+    Input("sales-data", 'data')
+)
+def cat_rates(data):
+    data = pd.DataFrame(json.loads(data))
+    data = data[["Product_Category", "Order_Demand", "Returns"]]
+    data = data.groupby(["Product_Category"], as_index = False).agg(
+        Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
+        Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
+    )
+    cat_rated = data.sort_values('Demand', ascending=False).head(10)
+    cards = [dbc.Row([
+                dbc.Col([
+                    html.I(className="bi bi-arrow-up-right-square-fill icon-main opacity")
+                ], width = 1),
+                dbc.Col([cat_rated.iloc[i,0],], className = 'border-right', width = 5),
+                dbc.Col([numerize.numerize(cat_rated.iloc[i,1]),], className = 'border-right', width = 3),
+                dbc.Col([numerize.numerize(cat_rated.iloc[i,2]),], width = 3)  ,
+                # html.Br()
+            ]) for i in range(len(cat_rated))]
+    return cards
 @callback(
     Output("data-table", "children"),
     # Input("date-time-filter", "value"),

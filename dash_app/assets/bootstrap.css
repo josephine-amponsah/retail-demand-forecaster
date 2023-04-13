@@ -11208,3 +11208,8 @@ legend {
 .guage-chart{
   height: 200px;
 }
+
+.cat-card-rows{
+  padding: 0px;
+  width: 100%;
+}
