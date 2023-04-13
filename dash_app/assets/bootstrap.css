@@ -11194,3 +11194,17 @@ legend {
   padding: 0px;
   border-radius: 5px;
 }
+
+.projections-section{
+  height: 350px;
+}
+.projections-graph{
+  height: 360px;
+}
+
+.projections-tables{
+  height: 350px;
+}
+.guage-chart{
+  height: 200px;
+}

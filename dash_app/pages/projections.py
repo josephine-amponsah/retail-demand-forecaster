@@ -68,19 +68,19 @@ layout = html.Div([
                         
                     ], className="card-body")
                 ], className= "card border-light mb-3"
-            ), width=4
+            ), width=4, className = ""
         ),
         dbc.Col(
             html.Div(
                 [
                     html.Div([
                         html.H6("Projected Demand", className="card-title"),
-                        dcc.Graph( id = "projected-demand-chart")
+                        dcc.Graph( id = "projected-demand-chart", className ='projections-graph')
                     ], className="card-body")
                 ], className= "card bg-light mb-3"
             ), width=8
         ),
-    ]),
+    ], className = ""),
     html.Br(),
     dbc.Row([
         dbc.Col(
@@ -90,7 +90,7 @@ layout = html.Div([
                         html.H6("Warehouses", className="card-title"),
                         
                     ], className="card-body")
-                ], className= "card bg-light mb-3", id="whse-projection"
+                ], className= "card bg-light mb-3 projections-tables", id="whse-projection"
             ), width=4
         ),
         dbc.Col(
@@ -107,7 +107,7 @@ layout = html.Div([
                         
                         dbc.Table(id = "predicted-table")
                     ], className="card-body")
-                ], className= "card bg-light mb-3"
+                ], className= "card bg-light mb-3 projections-tables"
             ), width=8
         ),
     ])
@@ -190,7 +190,9 @@ def salesTrend(date, data):
         margin={'l':20, 'r':20, 'b':0},
         font_color='white',
         # font_size=18,
-       
+        style ={
+            'height': '300px'
+        },
         hoverlabel={'bgcolor':'black', 'font_size':12, },
         bargap=.40
         

@@ -209,9 +209,9 @@ layout = html.Div([
             html.Div([
                 html.Div([
                     html.Div(["Gauge Chart"]),
-                    dcc.Graph(id = "gauge-chart")
+                    dcc.Graph(id = "gauge-chart", className ='guage-chart')
                 ], className = "card-body")
-            ], className="card border-light mb-3"),
+            ], className="card border-light mb-3 "),
             
         ],width=4, className= "fixed-cards"),
         
