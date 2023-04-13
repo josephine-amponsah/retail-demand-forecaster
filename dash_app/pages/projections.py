@@ -5,7 +5,10 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dash_table
 import json
+from sktime.forecasting.base import ForecastingHorizon
 from modules import forecastingPipeline as forecaster
+from datetime import datetime
+from dash.exceptions import PreventUpdate
 
 dash.register_page(__name__, path = '/projections')
 
@@ -20,7 +23,7 @@ revSummary = ['Products Sold', 'Returns', 'Highest Grossing Warehouse',  'Best P
 
 
 layout = html.Div([
-    dcc.Store(id = "sales-data"),
+    dcc.Store(id = "filtered-data"),
     dcc.Store(id = "projected-data"),
     dbc.Row([
         dbc.Col(
@@ -34,9 +37,9 @@ layout = html.Div([
                         html.Div([
                                 dcc.DatePickerRange(
                                     # style={"width": "100%"},
-                                    start_date = "2022-01",
+                                    start_date = "2022-01-01",
                                     min_date_allowed = "2022-01-02",
-                                    display_format = "MMM YYYY",
+                                    display_format = "DD MMM YYYY",
                                     start_date_placeholder_text="Start Date",
                                     end_date_placeholder_text="End Date",
                                     calendar_orientation = 'vertical',
@@ -119,8 +122,8 @@ layout = html.Div([
 )
 def filter_options(data):
     # sourcery skip: inline-immediately-returned-variable
-    sales_data = pd.DataFrame(json.loads(data))
-    options = sales_data["Warehouse"]
+    data = pd.DataFrame(json.loads(data))
+    options = data["Warehouse"]
     options = options.unique()
     return options
 
@@ -143,70 +146,81 @@ def filter_options(data):
     State("whse-selection", "value"),
     State("cat-selection", "value"),
     State("targets", "value"),
-    Input("sales-store", "data"),
+    # Input("sales-store", "data"),
     Input("model-run", "n_clicks")
 )
-def date_picker(start, end, whse, cat, target, data, click):
-    if click ==1:
-        data = pd.DataFrame(json.loads(data))
-        
-    
+def date_picker(start, end, whse, cat, target, click):
+    periods = 0
+    fh = 0
+    start_date = start
+    end_date = end
+    if click is None:
+        raise PreventUpdate
+        # data = pd.DataFrame()
+        # data = data.to_json(date_format='iso') 
+    else:
+        # start_date = pd.Timestamp(start_date)
+        # end_date = pd.Timestamp(end_date)
+        # start_date = pd.Period(start_date, freq ="M")
+        # end_date = end_date.to_period("M")
+        # # months = (start_date - end_date) + 1
+        fh = ForecastingHorizon(
+            pd.PeriodIndex(pd.date_range("2023-01", periods= 2, freq="M")), is_relative=False
+        )
+        pred = forecaster.forecast(fh)
+        data = pred.to_json(date_format='iso')
     return data
 
 
-# @callback(
-#     Output("projected-demand-chart", "figure"),
-#     # Input("date-time-filter", "value"),
-#     Input("projected-data", "data")
-# )
-# def salesTrend(date, data):
-#     plot_data = pd.DataFrame(json.loads(data))
-#     plot_data = plot_data[plot_data["year"] == date]
-#     plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
-#     plot_data = pd.DataFrame(plot_data).reset_index()
-#     fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
-#                        labels = {'Order_Demand':'Orders', "month": "Month"})
+@callback(
+    Output("projected-demand-chart", "figure"),
+    # Input("date-time-filter", "value"),
+    Input("projected-data", "data")
+)
+def salesTrend(date, data):
+    plot_data = pd.DataFrame(json.loads(data))
+    plot_data = plot_data[plot_data["year"] == date]
+    plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
+    plot_data = pd.DataFrame(plot_data).reset_index()
+    fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
+                       labels = {'Order_Demand':'Orders', "month": "Month"})
     
-#     fig.update_layout(
-#         paper_bgcolor = '#222',
-#         margin={'l':20, 'r':20, 'b':0},
-#         font_color='white',
-#         # font_size=18,
+    fig.update_layout(
+        paper_bgcolor = '#222',
+        margin={'l':20, 'r':20, 'b':0},
+        font_color='white',
+        # font_size=18,
        
-#         hoverlabel={'bgcolor':'black', 'font_size':12, },
-#         bargap=.40
+        hoverlabel={'bgcolor':'black', 'font_size':12, },
+        bargap=.40
         
-#     )
-#     fig.update_traces(
-#         # marker_bgcolor="#93c"
-#         marker = {
-#             'color': '#93c',
-#         }
-#         )
-#     fig.update_xaxes( # the y-axis is in dollars
-#         dtick= 30, 
-#         showgrid=True
-#     )
+    )
+    fig.update_traces(
+        # marker_bgcolor="#93c"
+        marker = {
+            'color': '#93c',
+        }
+        )
+    fig.update_xaxes( # the y-axis is in dollars
+        dtick= 30, 
+        showgrid=True
+    )
     
-#     return fig
-# @callback(
-#     Output("predicted-table", "children"),
-#     Input("projected-data", "data")
-# )
-# def data_table(date,whse, data):
-#     data = pd.DataFrame(json.loads(data))
-#     data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
-#     table = data[["Product_Category", "Order_Demand", "Returns"]]
-#     table = table.groupby(["Product_Category"], as_index = False).agg(
-#         Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
-#         Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
-#     )
-#     # table = table.reset_index()
-#     # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
-#     # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
-#     # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
-#     df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
-#     return df
+    return fig
+@callback(
+    Output("predicted-table", "children"),
+    Input("projected-data", "data")
+)
+def data_table(data):
+    data = pd.DataFrame(json.loads(data))
+    # data = data[(data["year"] == date )& (data["Warehouse"] == whse)]
+    # table = data[["Warehouse","Product_Category", "month_year","Order_Demand"]]
+    # table = table.groupby(["Warehouse","Product_Category", "month_year"], as_index = False).agg(
+    #     Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
+    #     # Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
+    #)
+    df = dbc.Table.from_dataframe(data, striped=True, bordered=True, hover=True, index=True, responsive = True)
+    return df
 
 # @callback(
 #     Output("whse-projection", "children"),

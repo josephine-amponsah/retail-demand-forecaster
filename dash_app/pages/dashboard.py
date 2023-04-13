@@ -158,9 +158,7 @@ layout = html.Div([
                                 # html.Div(["name"],),
                                 # html.Div(["orders"], id ="most-purchased-orders"),
                                 # html.Div(["revenue"], id ="most-purchased-revenue"),
-                            ], width = 10)
-                            
-                            
+                            ], width = 10)   
                         ]),
                         html.Hr(),
                         dbc.Row([
