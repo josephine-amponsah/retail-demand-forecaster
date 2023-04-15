@@ -10,6 +10,7 @@ import pandas as pd
 import sklearn 
 import joblib
 import pickle
+import json
 
 with open("modules/forecaster.pkl", 'rb') as f:
     model = joblib.load(f)
@@ -24,5 +25,9 @@ with open("modules/forecaster.pkl", 'rb') as f:
 def forecast(fh):
     pred = model.predict(fh)
     final = pred.reset_index()
-    return final
+    final["month_year"] = final["month_year"].astype(str)
+    dict = final.to_dict()
+    obj = json.dumps(dict)
+    # final = final.to_json(date_format='iso')
+    return obj
 
