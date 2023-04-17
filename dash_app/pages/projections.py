@@ -159,9 +159,7 @@ def date_picker(start, end, whse, cat, target, click):
     else:
         start_date = pd.Timestamp(start_date)
         end_date = pd.Timestamp(end_date)
-        # start_date = pd.Period(start_date, freq ="M")
-        # end_date = pd.Period(end_date, freq="M")
-        # months = (start_date - end_date) + 1
+        
         fh = ForecastingHorizon(
             pd.PeriodIndex(pd.date_range(start = start_date, end = end_date, freq="M")), is_relative=False
         )

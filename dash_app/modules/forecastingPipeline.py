@@ -12,7 +12,7 @@ import joblib
 import pickle
 import json
 
-with open("modules/forecaster.pkl", 'rb') as f:
+with open("modules/ens_model.pkl", 'rb') as f:
     model = joblib.load(f)
 
 # model = joblib.load('')
