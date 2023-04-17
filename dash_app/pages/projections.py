@@ -40,7 +40,7 @@ layout = html.Div([
                                 dcc.DatePickerRange(
                                     # style={"width": "100%"},
                                     start_date = "2022-01-01",
-                                    min_date_allowed = "2022-01-02",
+                                    min_date_allowed = "2022-01-01",
                                     display_format = "DD MMM YYYY",
                                     start_date_placeholder_text="Start Date",
                                     end_date_placeholder_text="End Date",
@@ -157,13 +157,13 @@ def date_picker(start, end, whse, cat, target, click):
     if click is None:
         raise PreventUpdate
     else:
-        # start_date = pd.Timestamp(start_date)
-        # end_date = pd.Timestamp(end_date)
+        start_date = pd.Timestamp(start_date)
+        end_date = pd.Timestamp(end_date)
         # start_date = pd.Period(start_date, freq ="M")
-        # end_date = end_date.to_period("M")
-        # # months = (start_date - end_date) + 1
+        # end_date = pd.Period(end_date, freq="M")
+        # months = (start_date - end_date) + 1
         fh = ForecastingHorizon(
-            pd.PeriodIndex(pd.date_range("2023-01", periods= 2, freq="M")), is_relative=False
+            pd.PeriodIndex(pd.date_range(start = start_date, end = end_date, freq="M")), is_relative=False
         )
         pred = forecastingPipeline.forecast(fh)
         # data = pred.to_json(date_format='iso')
@@ -247,8 +247,8 @@ def cat_rates(data):
                     dbc.Col([
                         html.I(className="bi bi-arrow-up-right-square-fill icon-main opacity")
                     ], width = 1),
-                    dbc.Col([cat_rated.iloc[i,0],], className = 'border-right', width = 5),
-                    dbc.Col([numerize.numerize(cat_rated.iloc[i,1]),], className = 'border-right', width = 3),
+                    dbc.Col([cat_rated.iloc[i,0],], className = 'border-right', width = 6),
+                    dbc.Col([numerize.numerize(cat_rated.iloc[i,1]),], className = '', width = 5),
                     # dbc.Col([numerize.numerize(cat_rated.iloc[i,2]),], width = 3)  ,
                 ]),
                 html.Br(),
