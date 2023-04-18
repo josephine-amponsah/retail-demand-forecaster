@@ -50,7 +50,7 @@ app.layout = html.Div([
                                 ], className = "nav-item"),
                         html.Li(
                                 [
-                            html.A("Testing", className ="nav-link", href= dash.page_registry['pages.testing']['path'])
+                            html.A("Documentation", className ="nav-link", href= dash.page_registry['pages.documentation']['path'])
                                 ], className = "nav-item"),
                     ], className="navbar-nav me-auto"
                     )
