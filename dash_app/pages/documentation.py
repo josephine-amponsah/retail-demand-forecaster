@@ -155,22 +155,59 @@ layout = dbc.Container([
     html.Section([
         html.H4("Technical Documentation"),
         html.H5("Architecture Overview"),
+        html.P("Here's a high-level overview of the app's architecture:"),
+        html.Ol([
+            html.Li([
+                html.Span("Data Source: ", style={'fontWeight': 'bold'}),
+                html.Span("The original data was retrieved from kaggle , cleaned and feature engineered tom meet the objectives of the project. The app data is served from a github repo as a form of an API.")
+            ]),
+            html.Li([
+                html.Span("Data Processing", style={'fontWeight': 'bold'}),
+                html.Span("The app processes the data to generate insights and forecasts, using various Python libraries such as Pandas and Numpy.")
+            ]),
+            html.Li([
+                html.Span("Data Visualization", style={'fontWeight': 'bold'}),
+                html.Span("The application displays the insights generated from the processed data using Dash core components and Plotly.")
+            ]),
+            html.Li([
+                html.Span("Forecasting", style={'fontWeight': 'bold'}),
+                html.Span("The projections page runs a hierarchical forecasting model using the sktime library and displays the forecast results using Dash core components and Plotly.")
+            ]),
+            html.Li([
+                html.Span("User Interface", style={'fontWeight': 'bold'}),
+                html.Span("The app's user interface is built using Dash core components, HTML, CSS using cyborg theme from dash bootstrap components.")
+            ]),
+        ]),
+        html.H5("Libraries / Components"),
         html.P(),
         html.Ol([
             html.Li([
-                html.Span("", style={'fontWeight': 'bold'}),
-                html.Span("")
+                html.Span("Pandas: ", style={'fontWeight': 'bold'}),
+                html.Span("The Pandas library is used to manipulate and preprocess the data, including cleaning and filtering the data, and aggregating "
+                          "the data by various dimensions such as product, category, and warehouse.")
             ]),
-        ]),
-        html.H5("Architecture Components"),
-        html.P(),
-        html.Ol([
             html.Li([
-                html.Span("", style={'fontWeight': 'bold'}),
-                html.Span("")
+                html.Span("Numpy: ", style={'fontWeight': 'bold'}),
+                html.Span("The NumPy library is used to perform numerical operations on the data, including calculating various metrics such as "
+                          "average demand, return rate, and revenue.")
+            ]),
+            html.Li([
+                html.Span("Dash: ", style={'fontWeight': 'bold'}),
+                html.Span("Dash core components are used to build various UI elements on the page, including dropdowns, charts, and tables, while the dash HTML components "
+                          "borrow the functionality of basic HTML to construct HTML elements.")
+            ]),
+            html.Li([
+                html.Span("Plotly: ", style={'fontWeight': 'bold'}),
+                html.Span("Plotly is used to build the interactive charts displayed on the page, including line charts and stacked bar charts.")
+            ]),
+            html.Li([
+                html.Span("Sktime: ", style={'fontWeight': 'bold'}),
+                html.Span("This is a forecasting library, built on machine learning estimators from scikit learn. In this application, it was used to build a hierarchical forecasting "
+                          "model that can forecast demand for various products and warehouses at different levels of the hierarchy.")
             ]),
         ]),
-        html.P(),
+        html.H5("Achitecture Design")
+        html.I(),
 
     ], id="techincal"),
     html.Section([
