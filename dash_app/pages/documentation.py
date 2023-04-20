@@ -20,21 +20,21 @@ layout = dbc.Container([
             html.Li([html.A("Machine Learning Model", href="#model")]),
             html.Li([html.A("Technical Documentation", href="#technical")]),
             html.Li([html.A("Future Development", href="#future")]),
-            html.Li([html.A("Conclusion", href="#conclusion")]),
+            # html.Li([html.A("Conclusion", href="#conclusion")]),
         ]),
     ]),
     html.Br(),
     html.Section([
         html.H4("Introduction"),
         html.P("Welcome to the documentation for our Dash application! Our application is designed to help"
-        " businesses gain insights into demand and returns for various products and warehouses, as well as "
-        "make projections for future demand using a hierarchical forecasting model."),
+               " businesses gain insights into demand and returns for various products and warehouses, as well as "
+               "make projections for future demand using a hierarchical forecasting model."),
         html.P("The application consists of two main pages: the dashboard and projections page. On the "
-        "dashboard page, users can view insights on demand and returns for various products and under their "
-        "categories for a number of warehouses. On the projections page, users can make demand projections "
-        "for a specified period of time using a hierarchical forecasting model."),
+               "dashboard page, users can view insights on demand and returns for various products and under their "
+               "categories for a number of warehouses. On the projections page, users can make demand projections "
+               "for a specified period of time using a hierarchical forecasting model."),
         html.P("Our application is built using Dash, a Python framework for building web applications. We've "
-        "also utilized several other Python libraries, including Pandas and Sktime, to implement the forecasting model."),
+               "also utilized several other Python libraries, including Pandas and Sktime, to implement the forecasting model."),
     ], id="introduction"),
     html.Br(),
     html.Section([
@@ -42,15 +42,18 @@ layout = dbc.Container([
         html.H5("Running the App Locally"),
         html.P("To run the app locally, follow these steps:"),
         html.Li([
-            html.Span("Clone the repository from GitHub: ", style={'fontWeight': 'bold'}),
+            html.Span("Clone the repository from GitHub: ",
+                      style={'fontWeight': 'bold'}),
             html.Span("git clone https://github.com/your-username/your-app.git")
         ]),
         html.Li([
-            html.Span("Navigate to the root directory of the app: ", style={'fontWeight': 'bold'}),
+            html.Span("Navigate to the root directory of the app: ",
+                      style={'fontWeight': 'bold'}),
             html.Span("cd your-app")
         ]),
         html.Li([
-            html.Span("install the necessary dependencies: ", style={'fontWeight': 'bold'}),
+            html.Span("install the necessary dependencies: ",
+                      style={'fontWeight': 'bold'}),
             html.Span("pip install -r requirements.txt")
         ]),
         html.Li([
@@ -59,48 +62,51 @@ layout = dbc.Container([
         ]),
         html.Li([
             html.Span("", style={'fontWeight': 'bold'}),
-            html.Span("Open your web browser and navigate to http://localhost:port-number")
+            html.Span(
+                "Open your web browser and navigate to http://localhost:port-number")
         ]),
         html.P("You should now see the app running locally on your machine."
-        "These instructions assume that you have Python and pip installed on "
-        "your machine. If you don't have these installed, please refer to the Python "
-        "documentation for installation instructions.")
+               "These instructions assume that you have Python and pip installed on "
+               "your machine. If you don't have these installed, please refer to the Python "
+               "documentation for installation instructions.")
     ], id="install"),
     html.Br(),
     html.Section([
         html.H4("User Guide"),
         html.P("The app, as previously stated, consists of two main pages: dashboard and projections. "
-        "The dashboard displays insights on demand and returns for various products and under their "
-        "categories for a number of warehouses. The projections page runs on a hierarchical forecasting model, "
-        "that predicts the demand of products for a period specified by the user."),
+               "The dashboard displays insights on demand and returns for various products and under their "
+               "categories for a number of warehouses. The projections page runs on a hierarchical forecasting model, "
+               "that predicts the demand of products for a period specified by the user."),
         html.H5("Dashboard Page"),
         html.P("The dashboard page displays insights on demand and returns for various products and under "
-        "their categories for a number of warehouses. Here's a breakdown of the different sections of the page:"),
+               "their categories for a number of warehouses. Here's a breakdown of the different sections of the page:"),
         html.Li([
             html.Span("Filters", style={'fontWeight': 'bold'}),
             html.Span("Use the filters at the top of the page to select the year for which you wish to view the insights."
-            "The filter on the data table is used to select the warehouse, whose data you wish to observe or retrieve.")
+                      "The filter on the data table is used to select the warehouse, whose data you wish to observe or retrieve.")
         ]),
         html.Li([
             html.Span("Demand Charts", style={'fontWeight': 'bold'}),
             html.Span("The bar chart displays the total demand for products in the specified year over monthly periods. the guage"
-            "chart displays the same parameter, but as the constitution of each warehouse's total demand by percentage.")
+                      "chart displays the same parameter, but as the constitution of each warehouse's total demand by percentage.")
         ]),
 
         html.Li([
             html.Span("Summary cards", style={'fontWeight': 'bold'}),
-            html.Span("These cards display summary statistics on the determined KPI's; demand, returns and net sales.")
+            html.Span(
+                "These cards display summary statistics on the determined KPI's; demand, returns and net sales.")
         ]),
         html.Li([
             html.Span("Stats cards", style={'fontWeight': 'bold'}),
             html.Span("This covers the highlights and top 10 categories card. These features provide insights on best and least"
-            " performing products and/or categories for the specified year")
+                      " performing products and/or categories for the specified year")
         ]),
         html.Li([
             html.Span("Data Table", style={'fontWeight': 'bold'}),
-            html.Span("With this table, you can view the detailed data on the demand and product returns and extract same.")
+            html.Span(
+                "With this table, you can view the detailed data on the demand and product returns and extract same.")
         ]),
-        
+
         html.H5("Projections Page"),
         html.P(),
         html.Li([
@@ -109,7 +115,8 @@ layout = dbc.Container([
         ]),
         html.Li([
             html.Span("Projection chart", style={'fontWeight': 'bold'}),
-            html.Span("The output of the forecast model is displayed a barchart in this feature.")
+            html.Span(
+                "The output of the forecast model is displayed a barchart in this feature.")
         ]),
         html.Li([
             html.Span("Data table", style={'fontWeight': 'bold'}),
@@ -117,7 +124,8 @@ layout = dbc.Container([
         ]),
         html.Li([
             html.Span("Stats card", style={'fontWeight': 'bold'}),
-            html.Span("On this feature, the output of the model is grouped and ranked by category and target variable and the top 10 are displayed.")
+            html.Span(
+                "On this feature, the output of the model is grouped and ranked by category and target variable and the top 10 are displayed.")
         ]),
     ], id="guide"),
     html.Br(),
@@ -140,8 +148,9 @@ layout = dbc.Container([
             html.Span("Naive Forecaster", style={'fontWeight': 'bold'}),
             html.Span("The NaiveForecaster is a simple forecasting strategy that uses the most recent observation as the forecast for the next period. "
                       "The NaiveForecaster is used as a baseline estimator to compare the performance of the hierarchical forecasting model against a simple forecasting strategy.")
-        ]),html.Li([
-            html.Span("Polynomial Trend Forecaster", style={'fontWeight': 'bold'}),
+        ]), html.Li([
+            html.Span("Polynomial Trend Forecaster",
+                      style={'fontWeight': 'bold'}),
             html.Span("The PolynomialTrendForecaster is a regression-based forecasting strategy that fits a polynomial trend to the historical data and extrapolates the trend to "
                       "make future predictions. The PolynomialTrendForecaster is used as a more sophisticated estimator that can capture trends and seasonality in the data.")
         ]),
@@ -163,11 +172,13 @@ layout = dbc.Container([
             ]),
             html.Li([
                 html.Span("Data Processing", style={'fontWeight': 'bold'}),
-                html.Span("The app processes the data to generate insights and forecasts, using various Python libraries such as Pandas and Numpy.")
+                html.Span(
+                    "The app processes the data to generate insights and forecasts, using various Python libraries such as Pandas and Numpy.")
             ]),
             html.Li([
                 html.Span("Data Visualization", style={'fontWeight': 'bold'}),
-                html.Span("The application displays the insights generated from the processed data using Dash core components and Plotly.")
+                html.Span(
+                    "The application displays the insights generated from the processed data using Dash core components and Plotly.")
             ]),
             html.Li([
                 html.Span("Forecasting", style={'fontWeight': 'bold'}),
@@ -175,7 +186,8 @@ layout = dbc.Container([
             ]),
             html.Li([
                 html.Span("User Interface", style={'fontWeight': 'bold'}),
-                html.Span("The app's user interface is built using Dash core components, HTML, CSS using cyborg theme from dash bootstrap components.")
+                html.Span(
+                    "The app's user interface is built using Dash core components, HTML, CSS using cyborg theme from dash bootstrap components.")
             ]),
         ]),
         html.H5("Libraries / Components"),
@@ -198,7 +210,8 @@ layout = dbc.Container([
             ]),
             html.Li([
                 html.Span("Plotly: ", style={'fontWeight': 'bold'}),
-                html.Span("Plotly is used to build the interactive charts displayed on the page, including line charts and stacked bar charts.")
+                html.Span(
+                    "Plotly is used to build the interactive charts displayed on the page, including line charts and stacked bar charts.")
             ]),
             html.Li([
                 html.Span("Sktime: ", style={'fontWeight': 'bold'}),
@@ -213,16 +226,22 @@ layout = dbc.Container([
     html.Section([
         html.H4("Future Developments"),
         html.H5("Accounting for error margins"),
-        html.P(),
+        html.P("In the next version of the app, one of the new features will be to account for the error margins in the model output. Currently, the projections "
+               "page uses a hierarchical forecasting model to predict demand for various products and warehouses. While the model "
+               "has shown good performance on test data, there is always some degree of uncertainty in the forecasts. In future development, "
+               "error margins will be incorporated into the model output and provide users with more information on the reliability of the forecasts."),
         html.H5("Downloading data"),
-        html.P(),
+        html.P("Currently, users can view insights on demand and returns for various products and warehouses on the dashboard page, as well as make "
+               "demand projections on the projections page. In future development, a feature that allows users to download the data displayed on these pages as CSV files will be added."),
         html.H5("Addition target variables"),
-        html.P()
+        html.P("In addition to forecasting demand, it is intended that other target variables will be added as input parameters to the hierarchical forecasting model."
+               "Specifically, we plan to include forecasts for returns and revenue in future development. This will provide users with a more comprehensive view of their"
+               "business performance and allow them to make more informed decisions.")
     ], id="future"),
-    html.Section([
-        html.H4("Conclusion"),
-        html.P()
-    ], id="conclusion")
+    # html.Section([
+    #     html.H4("Conclusion"),
+    #     html.P()
+    # ], id="conclusion")
 
 
 
