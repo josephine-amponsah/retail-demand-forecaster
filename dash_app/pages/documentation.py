@@ -94,7 +94,6 @@ layout = dbc.Container([
             html.Span("The bar chart displays the total demand for products in the specified year over monthly periods. the guage"
                       "chart displays the same parameter, but as the constitution of each warehouse's total demand by percentage.")
         ]),
-
         html.Li([
             html.Span("Summary cards", style={'fontWeight': 'bold'}),
             html.Span(
@@ -156,7 +155,8 @@ layout = dbc.Container([
             html.Span("Naive Forecaster", style={'fontWeight': 'bold'}),
             html.Span("The NaiveForecaster is a simple forecasting strategy that uses the most recent observation as the forecast for the next period. "
                       "The NaiveForecaster is used as a baseline estimator to compare the performance of the hierarchical forecasting model against a simple forecasting strategy.")
-        ]), html.Li([
+        ]), 
+        html.Li([
             html.Span("Polynomial Trend Forecaster",
                       style={'fontWeight': 'bold'}),
             html.Span("The PolynomialTrendForecaster is a regression-based forecasting strategy that fits a polynomial trend to the historical data and extrapolates the trend to "
