@@ -8,7 +8,7 @@ from dash import dash_table
 # df = pd.read_csv('https://git.io/Juf1t')
 
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-dash.register_page(__name__, path='/testing')
+dash.register_page(__name__, path='/documentation')
 
 layout = dbc.Container([
     html.Section([
@@ -79,52 +79,77 @@ layout = dbc.Container([
         html.Li([
             html.Span("Filters", style={'fontWeight': 'bold'}),
             html.Span("Use the filters at the top of the page to select the year for which you wish to view the insights."
-            "The filter on the data table is used to select the warehouse, whose data you wish to observe or retrieve")
+            "The filter on the data table is used to select the warehouse, whose data you wish to observe or retrieve.")
         ]),
         html.Li([
-            html.Span("Demand chart", style={'fontWeight': 'bold'}),
-            html.Span("The demand chart displays the total demand for products in the specified year over monthly periods.")
+            html.Span("Demand Charts", style={'fontWeight': 'bold'}),
+            html.Span("The bar chart displays the total demand for products in the specified year over monthly periods. the guage"
+            "chart displays the same parameter, but as the constitution of each warehouse's total demand by percentage.")
         ]),
 
         html.Li([
-                html.Span("Summary cards", style={'fontWeight': 'bold'}),
-                html.Span("")
+            html.Span("Summary cards", style={'fontWeight': 'bold'}),
+            html.Span("These cards display summary statistics on the determined KPI's; demand, returns and net sales.")
         ]),
         html.Li([
-                html.Span("Stats cards", style={'fontWeight': 'bold'}),
-                html.Span("This covers the highlights and top 10 categories card. These features provide insights on best and least"
-                " performing products and/or categories for the specified year")
+            html.Span("Stats cards", style={'fontWeight': 'bold'}),
+            html.Span("This covers the highlights and top 10 categories card. These features provide insights on best and least"
+            " performing products and/or categories for the specified year")
         ]),
         html.Li([
-                html.Span("", style={'fontWeight': 'bold'}),
-                html.Span("")
+            html.Span("Data Table", style={'fontWeight': 'bold'}),
+            html.Span("With this table, you can view the detailed data on the demand and product returns and extract same.")
         ]),
         
         html.H5("Projections Page"),
         html.P(),
         html.Li([
-            html.Span("Demand chart", style={'fontWeight': 'bold'}),
-            html.Span("The demand chart displays the demand for the selected product or category over time, broken down by warehouse.")
+            html.Span("Forecaster settings", style={'fontWeight': 'bold'}),
+            html.Span("For determining the forecast settings for the warehouse and/or category you want to forecast, including the forecast period, and the target.")
         ]),
-
-
+        html.Li([
+            html.Span("Projection chart", style={'fontWeight': 'bold'}),
+            html.Span("The output of the forecast model is displayed a barchart in this feature.")
+        ]),
+        html.Li([
+            html.Span("Data table", style={'fontWeight': 'bold'}),
+            html.Span("This provides detailed data of the output of the model.")
+        ]),
+        html.Li([
+            html.Span("Stats card", style={'fontWeight': 'bold'}),
+            html.Span("On this feature, the output of the model is grouped and ranked by category and target variable and the top 10 are displayed.")
+        ]),
     ], id="guide"),
     html.Br(),
     html.Section([
         html.H4("Machine Learning Model"),
-        html.P(),
+        html.P("The projections page uses a hierarchical forecasting model to predict demand for various products and warehouses "
+               "at different levels of the hierarchy. The model is an EnsembleForecaster, which is a meta-estimator that combines "
+               "the predictions of multiple base estimators. The base estimators used in the model are NaiveForecaster and PolynomialTrendForecaster."),
         html.H5("Model Overview"),
-        html.P(),
+        html.P("The hierarchical forecasting model is based on the idea that demand for products at different levels of the hierarchy (such "
+               "as product, category, and warehouse) is related and can be used to improve forecast accuracy. The model uses a top-down approach"
+               " to generate forecasts, starting from the highest level of the hierarchy (such as total demand for all products and warehouses) "
+               "and then disaggregating the forecast to lower levels of the hierarchy (such as demand for individual products and warehouses)."),
+        html.P("The model is implemented using the EnsembleForecaster class from the sktime.forecasting.compose module in the Scikit-Time library. "
+               "The model is trained on historical demand data for various products and warehouses, using a rolling window approach to simulate "
+               "real-time forecasting. The model's performance is evaluated using the R2 score, which is a measure of how well the model fits the data."),
         html.H5("Base Estimators"),
-        html.P(),
+        html.P("The EnsembleForecaster combines the predictions of two base estimators: NaiveForecaster and PolynomialTrendForecaster."),
         html.Li([
-            html.Span("", style={'fontWeight': 'bold'}),
-            html.Span("")
+            html.Span("Naive Forecaster", style={'fontWeight': 'bold'}),
+            html.Span("The NaiveForecaster is a simple forecasting strategy that uses the most recent observation as the forecast for the next period. "
+                      "The NaiveForecaster is used as a baseline estimator to compare the performance of the hierarchical forecasting model against a simple forecasting strategy.")
+        ]),html.Li([
+            html.Span("Polynomial Trend Forecaster", style={'fontWeight': 'bold'}),
+            html.Span("The PolynomialTrendForecaster is a regression-based forecasting strategy that fits a polynomial trend to the historical data and extrapolates the trend to "
+                      "make future predictions. The PolynomialTrendForecaster is used as a more sophisticated estimator that can capture trends and seasonality in the data.")
         ]),
         html.I(),
         html.H5("Performance Evaluation"),
-        html.P(),
-        html.P(),
+        html.P("The hierarchical forecasting model achieved an R2 score of 0.8164 on the test set, indicating that the model explains 81.64 percent of the variability in the data. "),
+        html.P("The hierarchical forecasting model used in our projections page is a powerful tool for predicting demand for various products and warehouses at different levels of "
+               "the hierarchy. The model combines the predictions of multiple base estimators to generate accurate forecasts that can be used to inform business decisions."),
     ], id="model"),
     html.Br(),
     html.Section([
