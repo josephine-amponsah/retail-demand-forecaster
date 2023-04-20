@@ -80,6 +80,10 @@ layout = dbc.Container([
         html.H5("Dashboard Page"),
         html.P("The dashboard page displays insights on demand and returns for various products and under "
                "their categories for a number of warehouses. Here's a breakdown of the different sections of the page:"),
+        html.Br(),
+        dbc.Row([
+            dbc.Col([html.Img(src = "assets/dashboard-wireframe.png")], width = 8)], justify = 'center'),
+        html.Br(),
         html.Li([
             html.Span("Filters", style={'fontWeight': 'bold'}),
             html.Span("Use the filters at the top of the page to select the year for which you wish to view the insights."
@@ -106,9 +110,13 @@ layout = dbc.Container([
             html.Span(
                 "With this table, you can view the detailed data on the demand and product returns and extract same.")
         ]),
-
+        html.Br(),
         html.H5("Projections Page"),
         html.P(),
+        html.Br(),
+        dbc.Row([
+            dbc.Col([html.Img(src = "assets/Projections wireframe.drawio.png")], width = 8)], justify = 'center'),
+        html.Br(),
         html.Li([
             html.Span("Forecaster settings", style={'fontWeight': 'bold'}),
             html.Span("For determining the forecast settings for the warehouse and/or category you want to forecast, including the forecast period, and the target.")
@@ -219,12 +227,21 @@ layout = dbc.Container([
                           "model that can forecast demand for various products and warehouses at different levels of the hierarchy.")
             ]),
         ]),
-        html.H5("Achitecture Design"),
-        html.I(),
+        html.H5("Application Architecture"),
+        html.Br(),
+        html.H6("Analytics | Dashboard")
+        dbc.Row([
+            dbc.Col([html.Img(src = "assets/dashboard-arch.png")], width = 8)], justify = 'center'),
+        html.Br(),
+        html.H6("Forecasting | Projections")
+        dbc.Row([
+            dbc.Col([html.Img(src = "assets/projection-arch.png")], width = 8)], justify = 'center'),
+        html.Br(),
 
     ], id="techincal"),
     html.Section([
         html.H4("Future Developments"),
+        html.P("Here are some of the ways the application will improved in the immediate future."),
         html.H5("Accounting for error margins"),
         html.P("In the next version of the app, one of the new features will be to account for the error margins in the model output. Currently, the projections "
                "page uses a hierarchical forecasting model to predict demand for various products and warehouses. While the model "
