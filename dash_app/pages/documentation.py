@@ -229,7 +229,7 @@ layout = dbc.Container([
         ]),
         html.H5("Application Architecture"),
         html.Br(),
-        html.H6("Analytics | Dashboard")
+        html.H6("Analytics | Dashboard"),
         dbc.Row([
             dbc.Col([html.Img(src = "assets/dashboard-arch.png")], width = 8)], justify = 'center'),
         html.Br(),
