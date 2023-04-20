@@ -233,7 +233,7 @@ layout = dbc.Container([
         dbc.Row([
             dbc.Col([html.Img(src = "assets/dashboard-arch.png")], width = 8)], justify = 'center'),
         html.Br(),
-        html.H6("Forecasting | Projections")
+        html.H6("Forecasting | Projections"),
         dbc.Row([
             dbc.Col([html.Img(src = "assets/projection-arch.png")], width = 8)], justify = 'center'),
         html.Br(),
