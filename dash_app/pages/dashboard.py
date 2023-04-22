@@ -55,7 +55,7 @@ layout = html.Div([
                                 dbc.Row([
                                     dbc.Col([
                                         html.H5(className="card-title", id = "sum-of-orders"),
-                                        html.P("15.89 %", className="card-text")
+                                        html.P("00.00 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
                                         html.I(className="bi bi-cart-check fa-3x icon-main")
@@ -72,8 +72,8 @@ layout = html.Div([
                                 html.P("Returns", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H3( className="card-title", id = "sum-of-returns"),
-                                        # html.P("15.89 %", className="card-text")
+                                        html.H5( className="card-title", id = "sum-of-returns"),
+                                        html.P("00.00 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
                                         html.I(className = "bi bi-arrow-left-square fa-3x icon-negative")
@@ -87,11 +87,11 @@ layout = html.Div([
                     html.Div(
                         [
                             html.Div([
-                                html.P("Revenue", className="card-text"),
+                                html.P("Net Sales", className="card-text"),
                                 dbc.Row([
                                     dbc.Col([
-                                        html.H5("$3.65 M", className="card-title"),
-                                        html.P("15.89 %", className="card-text")
+                                        html.H5("000", className="card-title", id = "net-sales"),
+                                        html.P("00.00 %", className="card-text")
                                     ], width = 8),
                                     dbc.Col([
                                         html.I(className = "bi bi-cash-coin fa-3x icon-positive")
@@ -286,6 +286,7 @@ def filter_options(data):
     Input("sales-store", "data")
 )
 def filtered_data(value, data):
+    # sourcery skip: inline-immediately-returned-variable
     data = pd.DataFrame(json.loads(data))
     new_df = data[data["year"] == value]
     new_df = new_df.to_json(date_format='iso')
@@ -304,15 +305,31 @@ def warehouse_options(data):
 
 
 @callback(
-    [Output("sum-of-orders", "children"), ], 
+    [Output("sum-of-orders", "children"), Output("sum-of-returns", "children"), Output("net-sales", "children"), ], 
     Input("sales-data", "data")
 )
-def orders_summary(data):
+def summary_cards(data):
     data = pd.DataFrame(json.loads(data))
     # data = data[data["year"] == year]
     total_orders = data["Order_Demand"].sum()
+    total_returns = data["Returns"].sum()
+    net_sales = total_orders - total_returns
     total_orders = numerize.numerize(total_orders)
-    return [total_orders]
+    total_returns = numerize.numerize(total_returns)
+    net_sales = numerize.numerize(net_sales)
+    return [total_orders, total_returns, net_sales]
+
+# @callback(
+#     [Output("sum-of-returns", "children"), ], 
+#     # Input("date-time-filter", "value"),
+#     Input("sales-data", "data")
+# )
+# def returns_stats(data):
+#     data = pd.DataFrame(json.loads(data))
+#     # data = data[data["year"] == year]
+#     total_returns = data["Returns"].sum()
+#     total_returns = numerize.numerize(total_returns)
+#     return [total_returns]
 
 
 @callback(
@@ -320,7 +337,7 @@ def orders_summary(data):
     # Input("date-time-filter", "value"),
     Input("sales-data", "data")
 )
-def date_summary(data):
+def cat_stats(data):
     data = pd.DataFrame(json.loads(data))
     # data = data[data["year"] == year]
     high_cat = data[["Product_Category", "Order_Demand"]]
@@ -334,7 +351,7 @@ def date_summary(data):
     # Input("date-time-filter", "value"),
     Input("sales-data", "data")
 )
-def date_summary(data):
+def prod_stats(data):
     data = pd.DataFrame(json.loads(data))
     # data = data[data["year"] == year]
     most_purchased = data[["Product_Code", "Order_Demand"]]
@@ -348,7 +365,7 @@ def date_summary(data):
     # Input("date-time-filter", "value"),
     Input("sales-data", "data")
 )
-def date_summary(data):
+def prod_stats_two(data):
     data = pd.DataFrame(json.loads(data))
     # data = data[data["year"] == year]
     least_purchased = data[["Product_Code", "Order_Demand"]]
@@ -362,7 +379,7 @@ def date_summary(data):
     # Input("date-time-filter", "value"),
     Input("sales-data", "data")
 )
-def date_summary(data):
+def prod_returns(data):
     data = pd.DataFrame(json.loads(data))
     # data = data[data["year"] == year]
     most_returned = data[["Product_Code", "Returns"]]
@@ -371,17 +388,7 @@ def date_summary(data):
     most_returned_orders = numerize.numerize(most_returned["Returns"].max())
     return [most_returned_name, most_returned_orders]
 
-@callback(
-    [Output("sum-of-returns", "children"), ], 
-    # Input("date-time-filter", "value"),
-    Input("sales-data", "data")
-)
-def date_summary(data):
-    data = pd.DataFrame(json.loads(data))
-    # data = data[data["year"] == year]
-    total_returns = data["Returns"].sum()
-    total_returns = numerize.numerize(total_returns)
-    return [total_returns]
+
 
 @callback(
     Output("monthly-sales-chart", "figure"),
@@ -393,17 +400,21 @@ def salesTrend(data):
     # plot_data = plot_data[plot_data["year"] == date]
     plot_data = plot_data.groupby(["month_year", "month"]).sum("Order_Demand")
     plot_data = pd.DataFrame(plot_data).reset_index()
+    # plot_data['month'] = plot_data['month'].astype('str')
     fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg",  histfunc='sum', 
                        labels = {'Order_Demand':'Orders', "month": "Month"})
     
     fig.update_layout(
         paper_bgcolor = '#222',
-        margin={'l':20, 'r':20, 'b':0},
+        margin={'l':20, 'r':20, 'b':10},
         font_color='white',
         # font_size=18,
        
         hoverlabel={'bgcolor':'black', 'font_size':12, },
-        bargap=.40
+        bargap=.40 ,
+        # xaxis = {
+        #     'tickangle': 45
+        # }
         
     )
     fig.update_traces(
@@ -414,7 +425,12 @@ def salesTrend(data):
         )
     fig.update_xaxes( # the y-axis is in dollars
         dtick= 30, 
-        showgrid=True
+        showgrid=True,
+        tickmode = 'linear',
+        tickangle = 45,
+        tickfont=dict(size=10),
+        type = 'category',
+        showticklabels =  True
     )
     
     return fig
@@ -450,7 +466,7 @@ def gauge(data):
     Output("category-rating", "children"),
     Input("sales-data", 'data')
 )
-def cat_rates(data):
+def cat_rates(data):  # sourcery skip: inline-immediately-returned-variable
     data = pd.DataFrame(json.loads(data))
     data = data[["Product_Category", "Order_Demand"]]
     data = data.groupby(["Product_Category"], as_index = False).agg(
@@ -478,16 +494,21 @@ def cat_rates(data):
     Input("sales-data", "data")
 )
 def data_table(whse, data):
+    # sourcery skip: inline-immediately-returned-variable
     data = pd.DataFrame(json.loads(data))
-    data = data[data["Warehouse"] == whse]
-    table = data[["Product_Category", "Order_Demand", "Returns"]]
+    if whse is None:
+        df = data
+    else:
+        df = data[data["Warehouse"] == whse]
+        
+    table = df[["Product_Category", "Order_Demand", "Returns"]]
     table = table.groupby(["Product_Category"], as_index = False).agg(
         Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
         Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
     )
-    # table = table.reset_index()
-    # table["Net_Sales"] = table["Order_Demand"] - table["Returns"]
-    # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows')
-    # table = table.rename(columns = {"Product_Category": "Category", "Order_Demand": "Demand"})
-    df = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
-    return df
+    table["Net_Sales"] = table["Demand"] - table["Returns"]
+    # table["Month-on-month %"] = table["Net_Sales"].pct_change(axis = 'rows').round(2)
+    table[['Demand', 'Returns', 'Net_Sales']] = table[['Demand', 'Returns', 'Net_Sales']].applymap(lambda x: numerize.numerize(x))
+    table = table.rename(columns = {"Product_Category": "Category"})
+    display = dbc.Table.from_dataframe(table, striped=True, bordered=True, hover=True, index=True, responsive = True)
+    return display
