@@ -44,7 +44,7 @@ layout = dbc.Container([
         html.Li([
             html.Span("Clone the repository from GitHub: ",
                       style={'fontWeight': 'bold'}),
-            html.Span("git clone https://github.com/your-username/your-app.git")
+            html.Span("git clone https://github.com/ladyjossy77/retail-demand-forecaster.git")
         ]),
         html.Li([
             html.Span("Navigate to the root directory of the app: ",
@@ -85,27 +85,27 @@ layout = dbc.Container([
             dbc.Col([html.Img(src = "assets/dashboard-wireframe.png")], width = 8)], justify = 'center'),
         html.Br(),
         html.Li([
-            html.Span("Filters", style={'fontWeight': 'bold'}),
+            html.Span("Filters: ", style={'fontWeight': 'bold'}),
             html.Span("Use the filters at the top of the page to select the year for which you wish to view the insights."
                       "The filter on the data table is used to select the warehouse, whose data you wish to observe or retrieve.")
         ]),
         html.Li([
-            html.Span("Demand Charts", style={'fontWeight': 'bold'}),
+            html.Span("Demand Charts: ", style={'fontWeight': 'bold'}),
             html.Span("The bar chart displays the total demand for products in the specified year over monthly periods. the guage"
                       "chart displays the same parameter, but as the constitution of each warehouse's total demand by percentage.")
         ]),
         html.Li([
-            html.Span("Summary cards", style={'fontWeight': 'bold'}),
+            html.Span("Summary cards: ", style={'fontWeight': 'bold'}),
             html.Span(
                 "These cards display summary statistics on the determined KPI's; demand, returns and net sales.")
         ]),
         html.Li([
-            html.Span("Stats cards", style={'fontWeight': 'bold'}),
+            html.Span("Stats cards: ", style={'fontWeight': 'bold'}),
             html.Span("This covers the highlights and top 10 categories card. These features provide insights on best and least"
                       " performing products and/or categories for the specified year")
         ]),
         html.Li([
-            html.Span("Data Table", style={'fontWeight': 'bold'}),
+            html.Span("Data Table: ", style={'fontWeight': 'bold'}),
             html.Span(
                 "With this table, you can view the detailed data on the demand and product returns and extract same.")
         ]),
@@ -117,20 +117,20 @@ layout = dbc.Container([
             dbc.Col([html.Img(src = "assets/Projections wireframe.drawio.png")], width = 8)], justify = 'center'),
         html.Br(),
         html.Li([
-            html.Span("Forecaster settings", style={'fontWeight': 'bold'}),
+            html.Span("Forecaster settings: ", style={'fontWeight': 'bold'}),
             html.Span("For determining the forecast settings for the warehouse and/or category you want to forecast, including the forecast period, and the target.")
         ]),
         html.Li([
-            html.Span("Projection chart", style={'fontWeight': 'bold'}),
+            html.Span("Projection chart: ", style={'fontWeight': 'bold'}),
             html.Span(
                 "The output of the forecast model is displayed a barchart in this feature.")
         ]),
         html.Li([
-            html.Span("Data table", style={'fontWeight': 'bold'}),
+            html.Span("Data table: ", style={'fontWeight': 'bold'}),
             html.Span("This provides detailed data of the output of the model.")
         ]),
         html.Li([
-            html.Span("Stats card", style={'fontWeight': 'bold'}),
+            html.Span("Stats card: ", style={'fontWeight': 'bold'}),
             html.Span(
                 "On this feature, the output of the model is grouped and ranked by category and target variable and the top 10 are displayed.")
         ]),
@@ -142,29 +142,37 @@ layout = dbc.Container([
                "at different levels of the hierarchy. The model is an EnsembleForecaster, which is a meta-estimator that combines "
                "the predictions of multiple base estimators. The base estimators used in the model are NaiveForecaster and PolynomialTrendForecaster."),
         html.H5("Model Overview"),
-        html.P("The hierarchical forecasting model is based on the idea that demand for products at different levels of the hierarchy (such "
-               "as product, category, and warehouse) is related and can be used to improve forecast accuracy. The model uses a top-down approach"
-               " to generate forecasts, starting from the highest level of the hierarchy (such as total demand for all products and warehouses) "
-               "and then disaggregating the forecast to lower levels of the hierarchy (such as demand for individual products and warehouses)."),
-        html.P("The model is implemented using the EnsembleForecaster class from the sktime.forecasting.compose module in the Scikit-Time library. "
+        html.P("The hierarchical forecasting model is based on the idea that demand for products at different levels of the hierarchy "
+               "is related and can be used to improve forecast accuracy. The model uses a top-down approach"
+               " to generate forecasts, starting from the highest level of the hierarchy (such as total demand for all products and warehouses), "
+               "and then disaggregating the forecast to lower levels of the hierarchy."),
+        html.P([
+            html.Span("The model is implemented using the EnsembleForecaster class from the"), 
+            html.Span(" sktime.forecasting.compose", style={'fontWeight': 'bold', 'fontStyle': 'italic'}), 
+            html.Span(" module in the Scikit-Time library. "
                "The model is trained on historical demand data for various products and warehouses, using a rolling window approach to simulate "
-               "real-time forecasting. The model's performance is evaluated using the R2 score, which is a measure of how well the model fits the data."),
+               "real-time forecasting. The model's performance is evaluated using the R2 score, which is a measure of how well the model fits the data.")
+            ]),
         html.H5("Base Estimators"),
         html.P("The EnsembleForecaster combines the predictions of two base estimators: NaiveForecaster and PolynomialTrendForecaster."),
         html.Li([
-            html.Span("Naive Forecaster", style={'fontWeight': 'bold'}),
+            html.Span("Naive Forecaster: ", style={'fontWeight': 'bold', 'fontColor': 'purple'}),
             html.Span("The NaiveForecaster is a simple forecasting strategy that uses the most recent observation as the forecast for the next period. "
                       "The NaiveForecaster is used as a baseline estimator to compare the performance of the hierarchical forecasting model against a simple forecasting strategy.")
         ]), 
         html.Li([
-            html.Span("Polynomial Trend Forecaster",
-                      style={'fontWeight': 'bold'}),
+            html.Span("Polynomial Trend Forecaster: ",
+                      style={'fontWeight': 'bold', 'fontColor': 'purple'}),
             html.Span("The PolynomialTrendForecaster is a regression-based forecasting strategy that fits a polynomial trend to the historical data and extrapolates the trend to "
                       "make future predictions. The PolynomialTrendForecaster is used as a more sophisticated estimator that can capture trends and seasonality in the data.")
         ]),
-        html.I(),
+        html.Br(),
         html.H5("Performance Evaluation"),
-        html.P("The hierarchical forecasting model achieved an R2 score of 0.8164 on the test set, indicating that the model explains 81.64 percent of the variability in the data. "),
+        html.P([
+            html.Span("The hierarchical forecasting model achieved an R2 score of"), 
+            html.Span(" 0.8164 ", style={'fontWeight': 'bold'}), 
+            html.Span("on the test set, indicating that the model explains 81.64 percent of the variability in the data.")
+            ]),
         html.P("The hierarchical forecasting model used in our projections page is a powerful tool for predicting demand for various products and warehouses at different levels of "
                "the hierarchy. The model combines the predictions of multiple base estimators to generate accurate forecasts that can be used to inform business decisions."),
     ], id="model"),
@@ -179,21 +187,21 @@ layout = dbc.Container([
                 html.Span("The original data was retrieved from kaggle , cleaned and feature engineered tom meet the objectives of the project. The app data is served from a github repo as a form of an API.")
             ]),
             html.Li([
-                html.Span("Data Processing", style={'fontWeight': 'bold'}),
+                html.Span("Data Processing: ", style={'fontWeight': 'bold'}),
                 html.Span(
                     "The app processes the data to generate insights and forecasts, using various Python libraries such as Pandas and Numpy.")
             ]),
             html.Li([
-                html.Span("Data Visualization", style={'fontWeight': 'bold'}),
+                html.Span("Data Visualization: ", style={'fontWeight': 'bold'}),
                 html.Span(
                     "The application displays the insights generated from the processed data using Dash core components and Plotly.")
             ]),
             html.Li([
-                html.Span("Forecasting", style={'fontWeight': 'bold'}),
+                html.Span("Forecasting: ", style={'fontWeight': 'bold'}),
                 html.Span("The projections page runs a hierarchical forecasting model using the sktime library and displays the forecast results using Dash core components and Plotly.")
             ]),
             html.Li([
-                html.Span("User Interface", style={'fontWeight': 'bold'}),
+                html.Span("User Interface: ", style={'fontWeight': 'bold'}),
                 html.Span(
                     "The app's user interface is built using Dash core components, HTML, CSS using cyborg theme from dash bootstrap components.")
             ]),
@@ -227,13 +235,15 @@ layout = dbc.Container([
                           "model that can forecast demand for various products and warehouses at different levels of the hierarchy.")
             ]),
         ]),
-        html.H5("Application Architecture"),
         html.Br(),
-        html.H6("Analytics | Dashboard"),
+        html.H5("Application Architecture"),
+        html.H6("Analytics | Dashboard", style = {'textAlign': 'center'}),
+        html.Br(),
         dbc.Row([
             dbc.Col([html.Img(src = "assets/dashboard-arch.png")], width = 8)], justify = 'center'),
         html.Br(),
-        html.H6("Forecasting | Projections"),
+        html.H6("Forecasting | Projections", style = {'textAlign': 'center'}),
+        html.Br(),
         dbc.Row([
             dbc.Col([html.Img(src = "assets/projection-arch.png")], width = 8)], justify = 'center'),
         html.Br(),
@@ -241,7 +251,7 @@ layout = dbc.Container([
     ], id="techincal"),
     html.Section([
         html.H4("Future Developments"),
-        html.P("Here are some of the ways the application will improved in the immediate future."),
+        html.P("Here are some of the ways the application will improved in the immediate future:"),
         html.H5("Accounting for error margins"),
         html.P("In the next version of the app, one of the new features will be to account for the error margins in the model output. Currently, the projections "
                "page uses a hierarchical forecasting model to predict demand for various products and warehouses. While the model "
@@ -251,15 +261,9 @@ layout = dbc.Container([
         html.P("Currently, users can view insights on demand and returns for various products and warehouses on the dashboard page, as well as make "
                "demand projections on the projections page. In future development, a feature that allows users to download the data displayed on these pages as CSV files will be added."),
         html.H5("Addition target variables"),
-        html.P("In addition to forecasting demand, it is intended that other target variables will be added as input parameters to the hierarchical forecasting model."
+        html.P("In addition to forecasting demand, it is intended that other target variables will be added as input parameters to the hierarchical forecasting model. "
                "Specifically, we plan to include forecasts for returns and revenue in future development. This will provide users with a more comprehensive view of their"
                "business performance and allow them to make more informed decisions.")
     ], id="future"),
-    # html.Section([
-    #     html.H4("Conclusion"),
-    #     html.P()
-    # ], id="conclusion")
 
-
-
-])
+], style = {'textAlign':'justify' })

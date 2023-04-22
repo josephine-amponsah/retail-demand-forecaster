@@ -181,7 +181,7 @@ def date_picker(start, end, whse, cat, target, click):
     # Input("date-time-filter", "value"),
     Input("projected-data", "data")
 )
-def sales_trend(data):
+def sales_trend(data):  # sourcery skip: remove-unnecessary-else
     if data is None or data == "":
         raise PreventUpdate
     else: 
