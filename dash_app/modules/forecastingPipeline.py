@@ -26,8 +26,8 @@ def forecast(fh):
     pred = model.predict(fh)
     final = pred.reset_index()
     final["month_year"] = final["month_year"].astype(str)
-    dict = final.to_dict()
-    obj = json.dumps(dict)
+    # dicts = final.to_dict()
+    # obj = json.dumps(dict)
     # final = final.to_json(date_format='iso')
-    return obj
+    return final
 

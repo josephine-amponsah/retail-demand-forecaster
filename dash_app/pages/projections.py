@@ -14,7 +14,7 @@ from numerize import numerize
 
 dash.register_page(__name__, path = '/projections')
 
-targets = ["Orders", "Returns", "Revenue"]
+targets = ["Demand"]
 
 
 summary_table = pd.DataFrame.from_dict({
@@ -54,7 +54,7 @@ layout = html.Div([
                         dcc.Dropdown( placeholder = 'Warehouse', id = 'whse-selection', className="dbc year-dropdown .Select-control") ,
                         html.Br(),
                         html.Div("Categories"),
-                        dcc.Dropdown( placeholder = 'Year', id = 'cat-selection', className="dbc year-dropdown .Select-control"),
+                        dcc.Dropdown( placeholder = 'Category', id = 'cat-selection', className="dbc year-dropdown .Select-control"),
                         html.Br(),
                         html.Div("Target"),
                         dcc.Dropdown(placeholder = "Target", options = targets, className="year-dropdown dbc .Select-control", id = "targets"),
@@ -89,9 +89,9 @@ layout = html.Div([
             html.Div(
                 [
                     html.Div([
-                        html.H6("Top 10 Categories", className="card-title"),
+                        html.H6("Top 10 Products", className="card-title"),
                     ], className="card-body"),
-                    html.Div([],  id="cat-projection", className = 'table-box')
+                    html.Div([],  id="product-rating", className = 'table-box')
                 ], className= "card bg-light mb-3 projections-tables details-table-section",
             ), width=4
         ),
@@ -121,7 +121,7 @@ layout = html.Div([
     Output("whse-selection", "options"),
     Input("sales-store", "data")
 )
-def filter_options(data):
+def whse_options(data):
     # sourcery skip: inline-immediately-returned-variable
     data = pd.DataFrame(json.loads(data))
     options = data["Warehouse"]
@@ -132,7 +132,7 @@ def filter_options(data):
     Output("cat-selection", "options"),
     Input("sales-store", "data")
 )
-def filter_options(data):
+def cat_options(data):
     # sourcery skip: inline-immediately-returned-variable
     sales_data = pd.DataFrame(json.loads(data))
     options = sales_data["Product_Category"]
@@ -164,8 +164,16 @@ def date_picker(start, end, whse, cat, target, click):
             pd.PeriodIndex(pd.date_range(start = start_date, end = end_date, freq="M")), is_relative=False
         )
         pred = forecastingPipeline.forecast(fh)
+    if whse is not None and cat is not None:
+        pred = pred[(pred['Warehouse'] == whse) & (pred['Product_Category'] == cat)]
+    elif whse is not None:
+        pred = pred[pred['Warehouse'] == whse]
+    elif cat is not None:
+        pred = pred[pred['Product_Category'] == cat]
+    pred_dict = pred.to_dict()
+    output = json.dumps(pred_dict)
         # data = pred.to_json(date_format='iso')
-    return pred
+    return output
 
 
 @callback(
@@ -177,14 +185,16 @@ def sales_trend(data):
     if data is None or data == "":
         raise PreventUpdate
     else: 
-        plot_data = pd.read_json(data)
+        plot_data = pd.DataFrame(json.loads(data))
         # plot_data = plot_data[plot_data["year"] == date]
-
-        # plot_data["month"] = plot_data["month_year"].dt.strftime('%B')
-        plot_data = plot_data.groupby(["month_year"]).sum("Order_Demand")
+        plot_data["month"]= pd.to_datetime(plot_data['month_year'], errors='coerce').dt.month_name(locale='English')
+        plot_data["month_number"]= pd.to_datetime(plot_data['month_year'], errors='coerce').dt.month
+        # plot_data["month"] = plot_data["month_year"].dt.strftime('%B').dt.month
+        plot_data = plot_data.groupby(["month", "month_number"]).sum("Order_Demand")
         plot_data = pd.DataFrame(plot_data).reset_index()
-        fig = px.histogram(plot_data, y="Order_Demand", x="month_year", template="cyborg",  histfunc='sum', 
-                        labels = {'Order_Demand':'Orders', "month_year": "Month"})
+        plot_data = plot_data.sort_values('month_number')
+        fig = px.histogram(plot_data, y="Order_Demand", x="month", template="cyborg", histfunc= 'sum',
+                        labels = {'Order_Demand':'Orders', "month": "Month"})
         
         fig.update_layout(
             paper_bgcolor = '#222',
@@ -228,13 +238,13 @@ def data_table(data):
     return df
 
 @callback(
-    Output("cat-projection", "children"),
+    Output("product-rating", "children"),
     Input("projected-data", 'data')
 )
 def cat_rates(data):
     data = pd.DataFrame(json.loads(data))
-    data = data[["Product_Category", "Order_Demand"]]
-    data = data.groupby(["Product_Category"], as_index = False).agg(
+    data = data[["Product_Code", "Order_Demand"]]
+    data = data.groupby(["Product_Code"], as_index = False).agg(
         Demand = pd.NamedAgg(column = "Order_Demand", aggfunc = sum),
         # Returns = pd.NamedAgg(column = "Returns", aggfunc = sum)
     )
